@@ -89,7 +89,6 @@ class LinkedList:
 
     def insert(self, afterNode, newNode):
         if afterNode == None:
-            print(123)
             if self.head == None:
                 self.head = newNode
                 self.tail = newNode
