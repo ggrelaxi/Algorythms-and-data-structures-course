@@ -74,6 +74,8 @@ class LinkedList:
                     node = nextNode
                     nextNode = nextNode.next
         else:
+            if self.head == None:
+                return
             prevNode = None
             node = self.head
 
