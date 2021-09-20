@@ -1,6 +1,3 @@
-from os import link
-
-
 class Node:
 
     def __init__(self, v):
