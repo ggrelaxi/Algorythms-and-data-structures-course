@@ -71,34 +71,24 @@ class LinkedList:
                     node = nextNode
                     nextNode = nextNode.next
         else:
+            prevNode = None
             node = self.head
-            nextNode = node.next
 
-            if node.value == val and nextNode == None:
+            if node.value == val and node.next == None:
                 self.head = None
                 self.tail = None
-            elif node.value == val and nextNode == self.tail:
-                self.head = nextNode
-            elif node.value == val and nextNode != self.tail and node == self.head:
-                self.head = nextNode
-                while nextNode != None:
-                    if nextNode.value == val and nextNode.next != self.tail:
-                        node.next = nextNode.next
-                    elif nextNode.value == val and nextNode.next == self.tail:
-                        self.tail = node
-                    node = nextNode
-                    nextNode = nextNode.next
-            elif node.value != val:
-                while nextNode != None:
-                    if nextNode.value == val and nextNode.next != self.tail:
-                        node.next = nextNode.next
-                    elif nextNode.value == val and nextNode.next == self.tail:
-                        self.tail = node
-                    node = nextNode
-                    nextNode = nextNode.next
-            
-
-                        
+            elif node.value == val and node.next == self.tail:
+                self.head = node.next
+            else:
+                while node != None:
+                    if node.value == val:
+                        if prevNode == None:
+                            self.head = node.next
+                        else:
+                            prevNode.next = node.next
+                    else:
+                        prevNode = node
+                    node = node.next
             
     def clean(self):
         self.head = None
