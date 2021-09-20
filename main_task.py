@@ -76,6 +76,7 @@ class LinkedList:
         else:
             if self.head == None:
                 return
+
             prevNode = None
             node = self.head
 
@@ -126,7 +127,7 @@ class LinkedList:
                 newNode.next = currentHead
         else:
             node = self.head
-            while node.next:
+            while node != None:
                 if node == afterNode:
                     currentNextNode = node.next
                     node.next = newNode
