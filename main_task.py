@@ -52,6 +52,9 @@ class LinkedList:
         if all == False:
             if self.head == None:
                 return
+            elif self.head != None and self.head == self.tail:
+                self.head = None
+                self.tail = None
             elif self.head != self.tail:
                 node = self.head
                 nextNode = node.next
