@@ -49,27 +49,57 @@ class LinkedList:
         return result
 
     def delete(self, val, all=False):
-        if self.head == None:
-            return
-        elif self.head != None and self.head.next == None:
-            node = self.head
-            if node.value == val:
-                self.head = None
-                self.tail = None
+        if all == False:
+            if self.head == None:
                 return
+            elif self.head != self.tail:
+                node = self.head
+                nextNode = node.next
+
+                while nextNode != None:
+                    if node.value == val and node == self.head:
+                        self.head = nextNode
+                        if node.next == self.tail:
+                            self.tail = nextNode
+                        return
+                    elif nextNode.value == val and node == self.tail:
+                        self.tail = node
+                        return
+                    elif nextNode.value == val and node != self.tail:
+                        node.next = nextNode.next
+                        return
+                    node = nextNode
+                    nextNode = nextNode.next
         else:
             node = self.head
-            if node.value == val:
-                self.head = node.next
-            else:
-                while node.next != None:
-                    nextNode = node.next
-                    if nextNode.value == val:
+            nextNode = node.next
+
+            if node.value == val and nextNode == None:
+                self.head = None
+                self.tail = None
+            elif node.value == val and nextNode == self.tail:
+                self.head = nextNode
+            elif node.value == val and nextNode != self.tail and node == self.head:
+                self.head = nextNode
+                while nextNode != None:
+                    if nextNode.value == val and nextNode.next != self.tail:
                         node.next = nextNode.next
-                        if all == False:
-                            break;
-                    node = nextNode.next
-                
+                    elif nextNode.value == val and nextNode.next == self.tail:
+                        self.tail = node
+                    node = nextNode
+                    nextNode = nextNode.next
+            elif node.value != val:
+                while nextNode != None:
+                    if nextNode.value == val and nextNode.next != self.tail:
+                        node.next = nextNode.next
+                    elif nextNode.value == val and nextNode.next == self.tail:
+                        self.tail = node
+                    node = nextNode
+                    nextNode = nextNode.next
+            
+
+                        
+            
     def clean(self):
         self.head = None
         self.tail = None
