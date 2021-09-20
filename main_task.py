@@ -1,3 +1,6 @@
+from os import link
+
+
 class Node:
 
     def __init__(self, v):
@@ -129,9 +132,14 @@ class LinkedList:
             node = self.head
             while node != None:
                 if node == afterNode:
-                    currentNextNode = node.next
-                    node.next = newNode
-                    newNode.next = currentNextNode
-                    break
+                    if node == self.tail:
+                        node.next = newNode
+                        self.tail = newNode
+                        break
+                    else:
+                        currentNextNode = node.next
+                        node.next = newNode
+                        newNode.next = currentNextNode
+                        break
                 else:
                     node = node.next
