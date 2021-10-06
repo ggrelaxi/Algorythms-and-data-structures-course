@@ -37,7 +37,8 @@ class LinkedList2:
         return result
 
     def delete(self, val, all=False):
-        if self.head == None:
+        len = self.len()
+        if len == 0:
             return
         if all == False:
             if self.head == self.tail and self.head.value == val:
@@ -96,8 +97,8 @@ class LinkedList2:
     def len(self):
         node = self.head
         len = 0
-        while node is not None:
-            len += 1
+        while node != None:
+            len = len + 1
             node = node.next
         return len
 
