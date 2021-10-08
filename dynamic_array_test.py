@@ -4,7 +4,25 @@ from dynamic_array import DynArray
 class DynamicArrayTest(unittest.TestCase):
 
     def testDelete(self):
-        pass
+        da = DynArray()
+
+        da.insert(0, 0)
+        da.insert(1, 1)
+        da.insert(2, 2)
+
+        da.delete(1)
+
+        self.assertEqual(da.__len__(), 2)
+        self.assertEqual(da.capacity, 16)
+        self.assertEqual(da.count, 2)
+        self.assertEqual(da.__getitem__(1), 2)
+
+        da.delete(0)
+
+        self.assertEqual(da.__len__(), 1)
+        self.assertEqual(da.capacity, 16)
+        self.assertEqual(da.count, 1)
+        self.assertEqual(da.__getitem__(0), 2)
 
     def testInsert(self):
 
@@ -23,16 +41,15 @@ class DynamicArrayTest(unittest.TestCase):
         self.assertEqual(da.count, 2)
 
         da.insert(1, 2)
-        print(da.__getitem__(0), da.__getitem__(1))
+
         self.assertEqual(da.__getitem__(1), 2)
         self.assertEqual(da.__getitem__(2), 3)
         self.assertEqual(da.capacity, 16)
         self.assertEqual(da.count, 3)
 
-        da.insert(3, 4)
         for x in range(3,16,1):
             da.insert(x, x + 1)
-        print(da.__len__(), 111111)
+            
         self.assertEqual(da.__getitem__(0), 1)
         self.assertEqual(da.__getitem__(15), 16)
         self.assertEqual(da.__len__(), 16)
@@ -47,11 +64,10 @@ class DynamicArrayTest(unittest.TestCase):
         self.assertEqual(da.capacity, 32)
         self.assertEqual(da.count, 17)
 
-        self.assertRaises(da.insert(40, 100), IndexError)
+        with self.assertRaises(Exception) as context:
+            da.insert(40, 100)
 
+            self.assrtTrue('Index is out of bounds' in context.exception)
         
-
-
-
 if __name__ == "__main__":
     unittest.main()

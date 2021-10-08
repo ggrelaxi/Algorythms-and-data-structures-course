@@ -38,18 +38,22 @@ class DynArray:
         elif i == self.capacity:
             self.resize(2 * self.capacity)
             self.append(itm)
-        elif i == self.capacity - 1:
-            self.resize(2 * self.capacity)
-            temp = self[i]
-            self.array[i] = itm
-            self.array[i + 1] = temp
         else:
-            for x in range(i, self.count, 1):
-                self.array[i + 1] = self.array[i]
+            if self.count == self.capacity:
+                self.resize(2*self.capacity)
+            for x in range(self.count, i, -1):
+                self.array[x] = self.array[x-1]
             self.array[i] = itm
             self.count += 1
 
-
-
     def delete(self, i):
-        pass
+        if i > self.capacity:
+            raise IndexError('Index is out of bounds')
+        else:
+            self.array[i] = ctypes.py_object()
+            for x in range(i, self.count - 1, 1):
+                self.array[x] = self.array[x + 1]
+            self.count -= 1
+            
+            if (self.count <= (self.capacity // 2)) and self.capacity >= 32:
+                self.resize(self.capacity / 2)
