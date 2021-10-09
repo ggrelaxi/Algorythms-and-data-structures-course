@@ -37,9 +37,10 @@ class DynamicArrayTest(unittest.TestCase):
         self.assertEqual(da2.capacity, 32)
 
         da2.delete(0)
+        da2.delete(0)
 
-        self.assertEqual(da2.count, 16)
-        self.assertEqual(da2.__len__(), 16)
+        self.assertEqual(da2.count, 15)
+        self.assertEqual(da2.__len__(), 15)
         self.assertEqual(da2.capacity, 21)
 
     def testInsert(self):

@@ -66,8 +66,9 @@ class DynArray:
                     newArray[x] = self.array[x]
                 else:
                     newArray[x] = self.array[x+1]
+
             self.array = newArray
             self.count -= 1
             
-            if (self.count <= (int(self.capacity // 2))) and self.capacity >= 24:
+            if (self.count < (int(self.capacity // 2))) and self.capacity >= 24:
                 self.resize(int(self.capacity // 1.5))
