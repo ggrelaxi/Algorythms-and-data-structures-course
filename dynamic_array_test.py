@@ -24,6 +24,24 @@ class DynamicArrayTest(unittest.TestCase):
         self.assertEqual(da.count, 1)
         self.assertEqual(da.__getitem__(0), 2)
 
+        da2 = DynArray()
+
+        for x in range(0, 32, 1):
+            da2.append(x)
+
+        for x in range(0, 15, 1):
+            da2.delete(x)
+
+        self.assertEqual(da2.count, 17)
+        self.assertEqual(da2.__len__(), 17)
+        self.assertEqual(da2.capacity, 32)
+
+        da2.delete(0)
+
+        self.assertEqual(da2.count, 16)
+        self.assertEqual(da2.__len__(), 16)
+        self.assertEqual(da2.capacity, 21)
+
     def testInsert(self):
         da = DynArray()
         

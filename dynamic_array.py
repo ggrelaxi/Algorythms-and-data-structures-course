@@ -60,6 +60,7 @@ class DynArray:
             self.count = 0
         else:
             newArray = self.make_array(self.capacity)
+
             for x in range(0, self.count - 1, 1):
                 if x < i:
                     newArray[x] = self.array[x]
@@ -68,5 +69,5 @@ class DynArray:
             self.array = newArray
             self.count -= 1
             
-            if (self.count < (self.capacity // 2)) and self.capacity >= 24:
-                self.resize(self.capacity // 1.5)
+            if (self.count <= (int(self.capacity // 2))) and self.capacity >= 24:
+                self.resize(int(self.capacity // 1.5))
