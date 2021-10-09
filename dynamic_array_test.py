@@ -25,10 +25,8 @@ class DynamicArrayTest(unittest.TestCase):
         self.assertEqual(da.__getitem__(0), 2)
 
     def testInsert(self):
-
         da = DynArray()
         
-
         da.insert(0, 1)
         self.assertEqual(da.__getitem__(0), 1)
         self.assertEqual(da.capacity, 16)
@@ -67,7 +65,12 @@ class DynamicArrayTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             da.insert(40, 100)
 
-            self.assrtTrue('Index is out of bounds' in context.exception)
+            self.assertTrue('Index is out of bounds' in context.exception)
+
+        with self.assertRaises(Exception) as context:
+            da.insert(-10, 100)
+
+            self.assertTrue('Index is out of bound' in context.exception)
         
 if __name__ == "__main__":
     unittest.main()

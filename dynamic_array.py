@@ -35,22 +35,26 @@ class DynArray:
     def insert(self, i, itm):
         if i > self.capacity:
             raise IndexError('Index is out of bounds')
-        elif i == self.capacity:
+        elif i == self.capacity and i == self.count:
             self.resize(2 * self.capacity)
             self.append(itm)
-        else:
+        elif i == 0 and i == self.count:
+            self.array[i] = itm
+            self.count += 1
+        elif i <= self.count:
             if self.count == self.capacity:
                 self.resize(2*self.capacity)
             for x in range(self.count, i, -1):
                 self.array[x] = self.array[x-1]
             self.array[i] = itm
             self.count += 1
+        else:
+            raise IndexError('Index is out of bounds')
 
     def delete(self, i):
         if i > self.capacity:
             raise IndexError('Index is out of bounds')
         else:
-            self.array[i] = ctypes.py_object()
             for x in range(i, self.count - 1, 1):
                 self.array[x] = self.array[x + 1]
             self.count -= 1
