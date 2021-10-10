@@ -67,6 +67,37 @@ class DynamicArrayTest(unittest.TestCase):
 
             self.assertTrue('Index is out of bounds' in context.exception)
 
+        da4 = DynArray()
+
+        for x in range(0, 16, 1):
+            da4.insert(x, x)
+        
+        da4.delete(15)
+        da4.delete(14)
+        da4.delete(13)
+        da4.delete(12)
+        da4.delete(11)
+        da4.delete(10)
+        da4.delete(9)
+        da4.delete(8)
+        da4.delete(7)
+
+        self.assertEqual(da4.__len__(), 7)
+        self.assertEqual(da4.count, 7)
+        self.assertEqual(da4.capacity, 16)
+
+        da4.delete(6)
+        da4.delete(5)
+        da4.delete(4)
+        da4.delete(3)
+        da4.delete(2)
+        da4.delete(1)
+        da4.delete(0)
+
+        self.assertEqual(da4.__len__(), 0)
+        self.assertEqual(da4.count, 0)
+        self.assertEqual(da4.capacity, 16)
+
     def testInsert(self):
         da = DynArray()
         
