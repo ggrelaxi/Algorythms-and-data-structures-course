@@ -198,23 +198,19 @@ class InvertedStack:
 
 def isCorrectBrackets(brackets):
     result = InvertedStack()
-    temp = []
-    size = 0
+
     if len(brackets) == 0:
         return True
     for i in range(0, len(brackets), 1):
-        currentSymbol = brackets[i]
 
-        if currentSymbol == "(":
-            result.push(currentSymbol)
-            temp.append(currentSymbol)
-            size += 1
+
+        if brackets[i] == "(":
+            result.push(brackets[i])
         else:
             if result.size() == 0:
                 return False
             result.pop()
-            temp.pop()
-            size -= 1
+
     return result.size() == 0
 
 
