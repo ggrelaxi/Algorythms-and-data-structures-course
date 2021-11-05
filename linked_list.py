@@ -9,6 +9,7 @@ class LinkedList:
     def __init__(self):
         self.head = None
         self.tail = None
+        self.count = 0
 
     def add_in_tail(self, item):
         if self.head is None:
@@ -16,6 +17,7 @@ class LinkedList:
         else:
             self.tail.next = item
         self.tail = item
+        self.count += 1
 
     def print_all_nodes(self):
         node = self.head
@@ -55,6 +57,7 @@ class LinkedList:
             elif self.head != None and self.head == self.tail:
                 self.head = None
                 self.tail = None
+                self.count = 0
             elif self.head != self.tail:
                 node = self.head
                 nextNode = node.next
@@ -102,19 +105,10 @@ class LinkedList:
     def clean(self):
         self.head = None
         self.tail = None
+        self.count = 0
 
     def len(self):
-        if self.head == None:
-            return 0
-        else:
-            node = self.head
-            len = 1
-
-            while node.next:
-                len += 1
-                node = node.next
-
-            return len
+        return self.count
 
     def insert(self, afterNode, newNode):
         if afterNode == None:
@@ -125,6 +119,7 @@ class LinkedList:
                 currentHead = self.head
                 self.head = newNode
                 newNode.next = currentHead
+            self.count += 1
         else:
             node = self.head
             while node != None:
@@ -132,11 +127,14 @@ class LinkedList:
                     if node == self.tail:
                         node.next = newNode
                         self.tail = newNode
+                        self.count += 1
                         break
                     else:
                         currentNextNode = node.next
                         node.next = newNode
                         newNode.next = currentNextNode
+                        self.count += 1
                         break
                 else:
                     node = node.next
+                self.count += 1
