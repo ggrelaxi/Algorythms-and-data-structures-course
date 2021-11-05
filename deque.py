@@ -172,6 +172,9 @@ class Deque:
         node = self.deque.head
 
         while node != None:
+            if node == self.deque.tail:
+                self.deque.clean()
+                return tailValue
             if node.next == self.deque.tail:
                 node.next = None
                 self.deque.tail = node

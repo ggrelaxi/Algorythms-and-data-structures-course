@@ -59,6 +59,8 @@ class DequeTest(unittest.TestCase):
         self.assertEqual(q1.size(), 2)
         self.assertEqual(q1.removeTail(), 1)
         self.assertEqual(q1.size(), 1)
+        self.assertEqual(q1.removeTail(), 0)
+        self.assertEqual(q1.size(), 0)
 
     def testPalindrom(self):
         word1 = 'казак'

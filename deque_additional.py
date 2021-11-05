@@ -168,10 +168,13 @@ class Deque:
         if self.size() == 0:
             return None
         tailValue = self.deque.tail.value
-        
+        print(tailValue, 111111)
         node = self.deque.head
 
         while node != None:
+            if node.next == None:
+                self.deque.clean()
+                return tailValue
             if node.next == self.deque.tail:
                 node.next = None
                 self.deque.tail = node
@@ -189,16 +192,16 @@ class Deque:
 
 # 7.2
 
-# def checkPalindrom(word):
-#     wordLen = len(word)
-#     deque = Deque()
-#     for x in range(0, wordLen, 1):
-#         deque.addFront(word[x])
+def checkPalindrom(word):
+    wordLen = len(word)
+    deque = Deque()
+    for x in range(0, wordLen, 1):
+        deque.addFront(word[x])
 
-#     halfPartLength = len(word) // 2
+    halfPartLength = len(word) // 2
 
-#     for x in range(0, halfPartLength):
-#         if deque.removeFront() != deque.removeTail():
-#             return False
+    for x in range(0, halfPartLength):
+        if deque.removeFront() != deque.removeTail():
+            return False
     
-#     return True;
+    return True;
