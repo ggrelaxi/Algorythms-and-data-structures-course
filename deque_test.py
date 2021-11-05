@@ -1,20 +1,63 @@
-class Deque:
-    def __init__(self):
-        # инициализация внутреннего хранилища
+import unittest
+from deque import Deque
 
-    def addFront(self, item):
-        # добавление в голову
+class DequeTest(unittest.TestCase):
+    def testAddFront(self):
+        q1 = Deque()
 
-    def addTail(self, item):
-        # добавление в хвост
+        self.assertEqual(q1.size(), 0)
 
-    def removeFront(self):
-        # удаление из головы
-        return None # если очередь пуста
+        q1.addFront(0)
 
-    def removeTail(self):
-        # удаление из хвоста
-        return None # если очередь пуста
+        self.assertEqual(q1.size(), 1)
+        self.assertEqual(q1.deque.head.value, 0)
 
-    def size(self):
-        return 0 # размер очереди
+        q1.addFront(1)
+        
+        self.assertEqual(q1.size(), 2)
+        self.assertEqual(q1.deque.head.value, 1)
+        self.assertEqual(q1.deque.head.next.value, 0)
+
+    def testAddTail(self):
+        q1 = Deque()
+
+        self.assertEqual(q1.size(), 0)
+        self.assertEqual(q1.deque.tail, None)
+
+        q1.addTail(0)
+
+        self.assertEqual(q1.size(), 1)
+        self.assertEqual(q1.deque.tail.value, 0)
+
+        q1.addTail(1)
+
+        self.assertEqual(q1.size(), 2)
+        self.assertEqual(q1.deque.tail.value, 1)
+        self.assertEqual(q1.deque.head.next.value, 1)
+
+    def testRemoveInFront(self):
+        q1 = Deque()
+
+        q1.addFront(0)
+        q1.addFront(1)
+        q1.addFront(2)
+
+        self.assertEqual(q1.removeFront(), 2)
+        self.assertEqual(q1.size(), 2)
+        self.assertEqual(q1.removeFront(), 1)
+        self.assertEqual(q1.size(), 1)
+
+    def testRemoveInTail(self):
+        q1 = Deque()
+
+        q1.addTail(0)
+        q1.addTail(1)
+        q1.addTail(2)
+
+        self.assertEqual(q1.removeTail(), 2)
+        self.assertEqual(q1.size(), 2)
+        self.assertEqual(q1.removeTail(), 1)
+        self.assertEqual(q1.size(), 1)
+
+if __name__ == "__main__":
+    unittest.main()
