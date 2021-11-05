@@ -1,5 +1,6 @@
 import unittest
 from deque import Deque
+from deque_additional import checkPalindrom
 
 class DequeTest(unittest.TestCase):
     def testAddFront(self):
@@ -58,6 +59,15 @@ class DequeTest(unittest.TestCase):
         self.assertEqual(q1.size(), 2)
         self.assertEqual(q1.removeTail(), 1)
         self.assertEqual(q1.size(), 1)
+
+    def testPalindrom(self):
+        word1 = 'казак'
+        word2 = 'потоп'
+        word3 = 'строка'
+
+        self.assertEqual(checkPalindrom(word1), True)
+        self.assertEqual(checkPalindrom(word2), True)
+        self.assertEqual(checkPalindrom(word3), False)
 
 if __name__ == "__main__":
     unittest.main()

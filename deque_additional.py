@@ -181,3 +181,24 @@ class Deque:
 
     def size(self):
         return self.deque.count
+
+# 7.1. Сложности методов будут:
+# Добавление/удаление в голову - O(1).
+# Добавление в хвост O(1)
+# Удаление из хвоста O(n). Потому что нам придеться пройти весь список до хвоста
+
+# 7.2
+
+# def checkPalindrom(word):
+#     wordLen = len(word)
+#     deque = Deque()
+#     for x in range(0, wordLen, 1):
+#         deque.addFront(word[x])
+
+#     halfPartLength = len(word) // 2
+
+#     for x in range(0, halfPartLength):
+#         if deque.removeFront() != deque.removeTail():
+#             return False
+    
+#     return True;
