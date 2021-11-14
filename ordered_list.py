@@ -117,55 +117,36 @@ class OrderedList:
         len = self.len()
         if len == 0:
             return
-        if all == False:
-            if self.head == self.tail and self.head.value == val:
-                self.head = None
+        
+        node = self.head
+
+        while node is not None:
+            nextNode = node.next
+            if node.value == val and self.head == node and self.tail == node:
                 self.tail = None
-            elif self.head != self.tail:
-                node = self.head
-                nextNode = node.next
-
-                while node is not None:
-                    if node.value == val and node == self.head:
-                        currentNextNode = node.next
-                        currentNextNode.prev = None
-                        self.head = currentNextNode
-                        return
-                    elif node.value == val and node == self.tail:
-                        currentPrevNode = node.prev
-                        currentPrevNode.next = None
-                        self.tail = currentPrevNode
-                        return
-                    elif node.value == val and node != self.tail:
-                        currentPrevNode = node.prev
-                        currentNextNode = node.next
-                        currentNextNode.prev = currentPrevNode
-                        currentPrevNode.next = currentNextNode
-                        return
-                    node = nextNode
-                    nextNode = nextNode.next
-        else:
-            node = self.head
-
-            while node is not None:
-                nextNode = node.next
-                if node.value == val and self.head == node and self.tail == node:
-                    self.tail = None
-                    self.head = None
-                elif node.value == val and self.head == node and self.tail != node:
-                    currentNextNode = node.next
-                    currentNextNode.prev = None
-                    self.head = currentNextNode
-                elif node.value == val and self.head != node and self.tail != node:
-                    currentPrevNode = node.prev
-                    currentNextNode = node.next
-                    currentNextNode.prev = currentPrevNode
-                    currentPrevNode.next = currentNextNode
-                elif node.value == val and self.head != node and self.tail == node:
-                    currentPrevNode = node.prev
-                    currentPrevNode.next = None
-                    self.tail = currentPrevNode
-                node = nextNode
+                self.head = None
+                self.length -= 1
+                return
+            elif node.value == val and self.head == node and self.tail != node:
+                currentNextNode = node.next
+                currentNextNode.prev = None
+                self.head = currentNextNode
+                self.length -= 1
+                return
+            elif node.value == val and self.head != node and self.tail != node:
+                currentPrevNode = node.prev
+                currentNextNode = node.next
+                currentNextNode.prev = currentPrevNode
+                currentPrevNode.next = currentNextNode
+                self.length -= 1
+                return
+            elif node.value == val and self.head != node and self.tail == node:
+                currentPrevNode = node.prev
+                currentPrevNode.next = None
+                self.tail = currentPrevNode
+                self.length -= 1
+                return
+            node = nextNode
 
     def clean(self, asc):
         self.__ascending = asc

@@ -51,6 +51,14 @@ class OrderedListTest(unittest.TestCase):
         self.assertEqual(list2.tail.value, 1)
         self.assertEqual(list2.head.next.value, 3)
         self.assertEqual(list2.tail.prev.value, 3)
+
+        list2.delete(3)
+
+        self.assertEqual(list2.length, 2)
+        self.assertEqual(list2.head.value, 5)
+        self.assertEqual(list2.tail.value, 1)
+        self.assertEqual(list2.head.next.value, 1)
+        self.assertEqual(list2.tail.prev.value, 5)
         
 if __name__ == "__main__":
     unittest.main()
