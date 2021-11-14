@@ -146,6 +146,7 @@ class OrderedList:
                 self.tail = currentPrevNode
                 self.length -= 1
                 return
+                
             node = nextNode
 
     def clean(self, asc):
