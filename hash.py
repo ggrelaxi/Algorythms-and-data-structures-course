@@ -14,6 +14,9 @@ class HashTable:
     def seek_slot(self, value):
         currentIndex = self.hash_fun(value)
 
+        if currentIndex > self.size - 1:
+            currentIndex = 0
+
         if self.slots[currentIndex] is not None:
             x = currentIndex + 1
 
@@ -26,7 +29,7 @@ class HashTable:
                     return None
                 else:
                     x += 1
-
+                    
         return currentIndex
 
     def put(self, value):
