@@ -39,11 +39,11 @@ class HashTable:
             return None
 
     def find(self, value):
-        currentIndex = self.seek_slot(value)
-        
+        currentIndex = self.hash_fun(value)
+
         if currentIndex is None:
             return None
-            
+
         if self.slots[currentIndex] != value:
             x = currentIndex + 1
 
@@ -56,5 +56,5 @@ class HashTable:
                     return None
                 else:
                     x += 1
-        
-        return currentIndex
+        else:
+            return currentIndex

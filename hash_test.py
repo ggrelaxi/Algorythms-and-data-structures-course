@@ -84,16 +84,17 @@ class HashTest(unittest.TestCase):
 
         ht2 = HashTable(19, 3)
 
-        length = 0
         for x in range(0, 100, 1):
             string = 'строка' + str(x)
-            slot = ht2.put(string)
-            if slot is not None:
-                length += 1
+            ht2.put(string)
 
-        for x in range(20, 100, 1):
+        for x in range(19, 100, 1):
             string = 'строка' + str(x)
             self.assertEqual(ht2.find(string), None)
+
+        for x in range(0, 19, 1):
+            string = 'строка' + str(x)
+            self.assertIsNotNone(ht2.find(string))
 
 if __name__ == "__main__":
     unittest.main()
