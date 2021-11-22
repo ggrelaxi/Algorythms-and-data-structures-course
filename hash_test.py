@@ -31,12 +31,20 @@ class HashTest(unittest.TestCase):
         self.assertEqual(ht2.put('строка6'), None)
     
     def testSeekSlot(self):
-        ht = HashTable(19, 3)
+        ht = HashTable(5, 3)
 
         self.assertEqual(ht.seek_slot('строка1'), 1)
         self.assertEqual(ht.put('строка1'), 1)
-
-        self.assertEqual(ht.put('строка1'), 2)
+        self.assertEqual(ht.seek_slot('строка2'), 2)
+        self.assertEqual(ht.put('строка2'), 2)
+        self.assertEqual(ht.seek_slot('строка3'), 3)
+        self.assertEqual(ht.put('строка3'), 3)
+        self.assertEqual(ht.seek_slot('строка4'), 4)
+        self.assertEqual(ht.put('строка4'), 4)
+        self.assertEqual(ht.seek_slot('строка5'), 0)
+        self.assertEqual(ht.put('строка5'), 0)
+        self.assertEqual(ht.seek_slot('строка6'), None)
+        self.assertEqual(ht.put('строка6'), None)       
 
     def testPut(self):
         ht = HashTable(19, 3)
