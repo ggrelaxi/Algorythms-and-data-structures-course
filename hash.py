@@ -26,17 +26,17 @@ class HashTable:
                     return None
                 else:
                     x += 1
-
-        return currentIndex
+        else:
+            return currentIndex
 
     def put(self, value):
         availableSlot = self.seek_slot(value)
-
+        
         if availableSlot is not None:
             self.slots[availableSlot] = value
             return availableSlot
-        
-        return None
+        else:
+            return None
 
     def find(self, value):
         currentIndex = self.hash_fun(value)

@@ -63,6 +63,17 @@ class HashTest(unittest.TestCase):
         self.assertEqual(ht2.put('строка6'), None)
         self.assertEqual(len(ht2.slots), 5)
 
+        ht3 = HashTable(19, 3)
+
+        length = 0
+        for x in range(0, 100, 1):
+            string = 'строка' + str(x)
+            slot = ht3.put(string)
+
+            if slot is not None:
+                length += 1
+
+        self.assertEqual(length, 19)
     def testFind(self):
         ht = HashTable(19, 1)
 
