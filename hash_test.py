@@ -3,7 +3,7 @@ from hash import HashTable
 
 class HashTest(unittest.TestCase):
     def testHashFunc(self):
-        ht = HashTable(19, 1)
+        ht = HashTable(19, 3)
 
         hash1 = ht.hash_fun('строка1')
 
@@ -15,7 +15,7 @@ class HashTest(unittest.TestCase):
         self.assertGreaterEqual(hash2, -1)
         self.assertLessEqual(hash2, ht.size)
 
-        ht2 = HashTable(5, 1)
+        ht2 = HashTable(5, 3)
 
         self.assertEqual(ht2.hash_fun('строка1'), 1)
         ht2.put('строка1')
@@ -33,7 +33,7 @@ class HashTest(unittest.TestCase):
         self.assertEqual(ht2.size, 5)
     
     def testSeekSlot(self):
-        ht = HashTable(5, 1)
+        ht = HashTable(5, 3)
 
         self.assertEqual(ht.seek_slot('строка1'), 1)
         self.assertEqual(ht.put('строка1'), 1)
@@ -49,11 +49,11 @@ class HashTest(unittest.TestCase):
         self.assertEqual(ht.put('строка6'), None)       
 
     def testPut(self):
-        ht = HashTable(19, 1)
+        ht = HashTable(19, 3)
 
         self.assertEqual(ht.put('строка1'), 1)
 
-        ht2 = HashTable(5, 1)
+        ht2 = HashTable(5, 3)
 
         ht2.put('строка1')
         ht2.put('строка2')
@@ -75,12 +75,25 @@ class HashTest(unittest.TestCase):
 
         self.assertEqual(length, 19)
     def testFind(self):
-        ht = HashTable(19, 1)
+        ht = HashTable(19, 3)
 
         ht.put('строка1')
 
         self.assertEqual(ht.find('строка1'), 1)
         self.assertEqual(ht.find('строка2'), None)
+
+        ht2 = HashTable(19, 3)
+
+        length = 0
+        for x in range(0, 100, 1):
+            string = 'строка' + str(x)
+            slot = ht2.put(string)
+            if slot is not None:
+                length += 1
+
+        for x in range(20, 100, 1):
+            string = 'строка' + str(x)
+            self.assertEqual(ht2.find(string), None)
 
 if __name__ == "__main__":
     unittest.main()
