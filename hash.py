@@ -18,12 +18,12 @@ class HashTable:
             x = currentIndex + 1
 
             while x != currentIndex:
-                if self.slots[x] is None:
+                if x >= len(self.slots):
+                    x = 0
+                elif self.slots[x] is None:
                     return x
                 elif x == currentIndex - 1:
                     return None
-                elif x == len(self.slots):
-                    x = 0
                 else:
                     x += 1
 
@@ -42,15 +42,15 @@ class HashTable:
         currentIndex = self.hash_fun(value)
 
         if self.slots[currentIndex] != value:
-             x = currentIndex + 1
+            x = currentIndex + 1
 
-             while x != currentIndex:
-                if self.slots[x] == value:
+            while x != currentIndex:
+                if x >= len(self.slots):
+                    x = 0
+                elif self.slots[x] == value:
                     return x
                 elif x == currentIndex - 1:
                     return None
-                elif x == len(self.slots):
-                    x = 0
                 else:
                     x += 1
         

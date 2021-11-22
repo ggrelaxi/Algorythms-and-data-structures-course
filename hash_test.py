@@ -33,7 +33,8 @@ class HashTest(unittest.TestCase):
 
         ht.put('строка1')
 
-        self.assertEqual(ht.find('строка1'), 1)    
+        self.assertEqual(ht.find('строка1'), 1)
+        self.assertEqual(ht.find('строка2'), None)
 
 if __name__ == "__main__":
     unittest.main()
