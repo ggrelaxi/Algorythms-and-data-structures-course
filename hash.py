@@ -18,7 +18,7 @@ class HashTable:
             x = currentIndex + 1
 
             while x != currentIndex:
-                if x >= len(self.slots):
+                if x >= len(self.slots) or x < 0:
                     x = 0
                 elif self.slots[x] is None:
                     return x
@@ -45,7 +45,7 @@ class HashTable:
             x = currentIndex + 1
 
             while x != currentIndex:
-                if x >= len(self.slots):
+                if x >= len(self.slots) or x < 0:
                     x = 0
                 elif self.slots[x] == value:
                     return x

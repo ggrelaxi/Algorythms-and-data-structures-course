@@ -3,7 +3,7 @@ from hash import HashTable
 
 class HashTest(unittest.TestCase):
     def testHashFunc(self):
-        ht = HashTable(19, 3)
+        ht = HashTable(19, 1)
 
         hash1 = ht.hash_fun('строка1')
 
@@ -27,11 +27,13 @@ class HashTest(unittest.TestCase):
         ht2.put('строка4')
         self.assertEqual(ht2.hash_fun('строка5'), 0)
         ht2.put('строка5')
+        self.assertEqual(ht2.size, 5)
         self.assertEqual(ht2.hash_fun('строка6'), 1)
         self.assertEqual(ht2.put('строка6'), None)
+        self.assertEqual(ht2.size, 5)
     
     def testSeekSlot(self):
-        ht = HashTable(5, 3)
+        ht = HashTable(5, 1)
 
         self.assertEqual(ht.seek_slot('строка1'), 1)
         self.assertEqual(ht.put('строка1'), 1)
@@ -47,7 +49,7 @@ class HashTest(unittest.TestCase):
         self.assertEqual(ht.put('строка6'), None)       
 
     def testPut(self):
-        ht = HashTable(19, 3)
+        ht = HashTable(19, 1)
 
         self.assertEqual(ht.put('строка1'), 1)
 
@@ -62,7 +64,7 @@ class HashTest(unittest.TestCase):
         self.assertEqual(len(ht2.slots), 5)
 
     def testFind(self):
-        ht = HashTable(19, 3)
+        ht = HashTable(19, 1)
 
         ht.put('строка1')
 
