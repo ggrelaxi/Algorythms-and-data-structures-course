@@ -11,19 +11,40 @@ class NativeDictionary:
 
         return length % self.size
 
+    def seek_slot(self, key):
+        currentIndex = self.hash_fun(key)
+
+        if self.slots[currentIndex] is not None:
+            x = currentIndex + 1
+
+            while x != currentIndex:
+                if x >= len(self.slots) or x < 0:
+                    x = 0
+                elif self.slots[x] is None:
+                    return x
+                elif x == currentIndex - 1:
+                    return None
+                else:
+                    x += 1
+        else:
+            return currentIndex
+
     def is_key(self, key):
         if key in self.slots:
             return True
         return False
 
     def put(self, key, value):
-        get_hash = self.hash_fun(key)
-        self.slots[get_hash] = key
-        self.values[get_hash] = value
+        if self.is_key(key) == False:
+            index = self.seek_slot(key)
+        else:
+            index = self.slots.index(key)
+        self.slots[index] = key
+        self.values[index] = value
 
     def get(self, key):
-        if self.is_key(key) == None:
+        if self.is_key(key) == False:
             return None
-        hash = self.hash_fun(key)
-        value = self.values[hash]
+        index = self.slots.index(key)
+        value = self.values[index]
         return value
