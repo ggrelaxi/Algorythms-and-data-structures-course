@@ -126,6 +126,19 @@ class PowerSetTest(unittest.TestCase):
 
         self.assertEqual(foufResult.size(), 0)
 
+        new_sub_set2.put(2)
+
+        thithResult = new_set2.difference(new_sub_set2)
+        self.assertEqual(thithResult.size(), 0)
+        self.assertEqual(thithResult.get(0), False)
+
+        new_set2.put(3)
+
+        sixthResult = new_set2.difference(new_sub_set2)
+
+        self.assertEqual(sixthResult.size(), 1)
+        self.assertEqual(sixthResult.get(3), True)
+
     def testSubSet(self):
         new_set = PowerSet()
 

@@ -51,14 +51,14 @@ class PowerSet():
 
     def difference(self, set2):
         result = PowerSet()
-        result.set = self.set
+        result.set = list(self.set)
 
         for i in range(0, len(set2.set)):
             current_item = set2.set[i]
+            print(current_item)
             if current_item in result.set:
                 item_index = result.set.index(current_item)
                 del result.set[item_index]
-
         return result
 
     def issubset(self, set2):
