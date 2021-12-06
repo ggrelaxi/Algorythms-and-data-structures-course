@@ -1,6 +1,3 @@
-import unittest
-
-
 class PowerSet():
     def __init__(self):
         self.set = list()
