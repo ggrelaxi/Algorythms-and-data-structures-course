@@ -138,6 +138,8 @@ class PowerSetTest(unittest.TestCase):
 
         self.assertEqual(sixthResult.size(), 1)
         self.assertEqual(sixthResult.get(3), True)
+        self.assertEqual(new_set2.size(), 2)
+        self.assertEqual(new_sub_set2.size(), 2)
 
     def testSubSet(self):
         new_set = PowerSet()
