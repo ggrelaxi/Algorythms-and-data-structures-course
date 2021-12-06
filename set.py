@@ -1,3 +1,6 @@
+import unittest
+
+
 class PowerSet():
     def __init__(self):
         self.set = list()
@@ -42,8 +45,10 @@ class PowerSet():
         # пересечение текущего множества и set2 
 
     def union(self, set2):
+        sum = self.set + set2.set
+        result_set = set(sum)
         result = PowerSet()
-        result.set = self.set + set2.set
+        result.set = list(result_set)
         return result
         # объединение текущего множества и set2
 
