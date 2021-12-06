@@ -29,8 +29,8 @@ class PowerSetTest(unittest.TestCase):
 
         for i in range(1, 11):
             if i < 4:
-                new_sub_set.add(i)
-            new_set.add(i)
+                new_sub_set.put(i)
+            new_set.put(i)
 
         result = new_set.intersection(new_sub_set)
 
@@ -39,9 +39,9 @@ class PowerSetTest(unittest.TestCase):
         self.assertEqual(result.get(2), True)
         self.assertEqual(result.get(3), True)
 
-        new_sub_set.delete(1)
-        new_sub_set.delete(2)
-        new_sub_set.delete(3)
+        new_sub_set.remove(1)
+        new_sub_set.remove(2)
+        new_sub_set.remove(3)
 
         second_result = new_set.intersection(new_sub_set)
 
@@ -50,7 +50,7 @@ class PowerSetTest(unittest.TestCase):
         self.assertEqual(second_result.get(2), False)
         self.assertEqual(second_result.get(3), False)
 
-        new_sub_set.add(11)
+        new_sub_set.put(11)
 
         third_result = new_set.intersection(new_sub_set)
 
@@ -63,8 +63,8 @@ class PowerSetTest(unittest.TestCase):
         result = new_set.union(new_sub_set)
         self.assertEqual(result.size(), 0)
 
-        new_set.add(1)
-        new_set.add(2)
+        new_set.put(1)
+        new_set.put(2)
 
         second_result = new_set.union(new_sub_set)
 
@@ -73,7 +73,7 @@ class PowerSetTest(unittest.TestCase):
         self.assertEqual(second_result.get(2), True)
         self.assertEqual(second_result.get(3), False)
 
-        new_sub_set.add(3)
+        new_sub_set.put(3)
 
         third_result = new_set.union(new_sub_set)
 
@@ -87,17 +87,17 @@ class PowerSetTest(unittest.TestCase):
         new_sub_set = PowerSet()
 
         for i in range(1, 11):
-            new_set.add(i)
+            new_set.put(i)
         
         result = new_set.difference(new_sub_set)
 
         self.assertEqual(result.size(), 10)
 
-        new_sub_set.add(1)
-        new_sub_set.add(2)
-        new_sub_set.add(3)
-        new_sub_set.add(4)
-        new_sub_set.add(5)
+        new_sub_set.put(1)
+        new_sub_set.put(2)
+        new_sub_set.put(3)
+        new_sub_set.put(4)
+        new_sub_set.put(5)
 
         second_result = new_set.difference(new_sub_set)
 
@@ -112,18 +112,18 @@ class PowerSetTest(unittest.TestCase):
         new_set = PowerSet()
 
         for i in range(1, 11):
-            new_set.add(i)
+            new_set.put(i)
 
         new_sub_set = PowerSet()
 
         self.assertEqual(new_set.issubset(new_sub_set), True)
 
-        new_sub_set.add(1)
-        new_sub_set.add(2)
+        new_sub_set.put(1)
+        new_sub_set.put(2)
 
         self.assertEqual(new_set.issubset(new_sub_set), True)
 
-        new_sub_set.add(11)
+        new_sub_set.put(11)
 
         self.assertEqual(new_set.issubset(new_sub_set), False)
         
