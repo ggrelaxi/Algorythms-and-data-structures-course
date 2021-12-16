@@ -49,35 +49,35 @@ class BloomFilterTest(unittest.TestCase):
         b.add(s9)
         b.add(s10)
 
-        self.assertEqual(b.filter[hash1_s1], 1)
-        self.assertEqual(b.filter[hash2_s1], 1)
+        self.assertEqual(b.filter[hash1_s1.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s1.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s2], 1)
-        self.assertEqual(b.filter[hash2_s2], 1)
+        self.assertEqual(b.filter[hash1_s2.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s2.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s3], 1)
-        self.assertEqual(b.filter[hash2_s3], 1)
+        self.assertEqual(b.filter[hash1_s3.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s3.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s4], 1)
-        self.assertEqual(b.filter[hash2_s4], 1)
+        self.assertEqual(b.filter[hash1_s4.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s4.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s5], 1)
-        self.assertEqual(b.filter[hash2_s5], 1)
+        self.assertEqual(b.filter[hash1_s5.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s5.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s6], 1)
-        self.assertEqual(b.filter[hash2_s6], 1)
+        self.assertEqual(b.filter[hash1_s6.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s6.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s7], 1)
-        self.assertEqual(b.filter[hash2_s7], 1)
+        self.assertEqual(b.filter[hash1_s7.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s7.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s8], 1)
-        self.assertEqual(b.filter[hash2_s8], 1)
+        self.assertEqual(b.filter[hash1_s8.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s8.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s9], 1)
-        self.assertEqual(b.filter[hash2_s9], 1)
+        self.assertEqual(b.filter[hash1_s9.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s9.index('1')], '1')
 
-        self.assertEqual(b.filter[hash1_s10], 1)
-        self.assertEqual(b.filter[hash2_s10], 1)
+        self.assertEqual(b.filter[hash1_s10.index('1')], '1')
+        self.assertEqual(b.filter[hash2_s10.index('1')], '1')
 
     def testIsValue(self):
         b = BloomFilter(32)
