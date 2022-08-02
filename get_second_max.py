@@ -10,7 +10,7 @@ def get_second_max(list):
         if current > first_max:
             second_max = first_max
             first_max = current
-        elif current > second_max and current < first_max:
+        elif current >= second_max and current <= first_max:
             second_max = current
 
         return inner_f(list, index + 1, first_max, second_max)

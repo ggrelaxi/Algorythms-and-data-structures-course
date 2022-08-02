@@ -6,7 +6,7 @@ class Get_second_max(unittest.TestCase):
     def test_second_max(self):
         self.assertEqual(get_second_max([1, 2, 3, 4, 5]), 4)
         self.assertEqual(get_second_max([1, 2, 3, 4, 4, 5]), 4)
-        self.assertEqual(get_second_max([1, 2, 3, 4, 4, 5, 6, 9, 9, 7]), 7)
+        self.assertEqual(get_second_max([1, 2, 3, 4, 4, 5, 6, 9, 9, 7]), 9)
         self.assertEqual(get_second_max([]), 0)
         self.assertEqual(get_second_max([1]), 0)
         self.assertEqual(get_second_max([1, 2]), 1)
