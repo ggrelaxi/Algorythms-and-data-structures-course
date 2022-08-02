@@ -20,6 +20,3 @@ def get_files(catalog_path=''):
     inner_f(catalog_path, files)
 
     return files
-
-
-print(get_files('C:/Users\Alex\Desktop\Обучение у Сергея Бобровского\Задачи на рекурсию\Algorythms-and-data-structures-course/folder'))
