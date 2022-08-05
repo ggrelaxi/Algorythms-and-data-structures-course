@@ -15,7 +15,10 @@ class SimpleTree:
         ParentNode.Children.append(NewChild)
 
     def DeleteNode(self, NodeToDelete):
-        NodeToDelete.Parent.Children.remove(NodeToDelete)
+        parentNode = NodeToDelete.Parent
+
+        if NodeToDelete in parentNode.Children:
+            NodeToDelete.Parent.Children.remove(NodeToDelete)
 
     def GetAllNodes(self):
         nodes = []
