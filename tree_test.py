@@ -22,11 +22,24 @@ class SimpleTreeTest(unittest.TestCase):
         rootNode = SimpleTreeNode(1, None)
         newTree = SimpleTree(rootNode)
         newChildNode = SimpleTreeNode(2, newTree.Root)
+        newInnerNode = SimpleTreeNode(3, newChildNode)
+        newSecondInnerNode = SimpleTreeNode(3, newChildNode)
+        newThirdInnerNode = SimpleTreeNode(4, newChildNode)
+        newFouthInnerNode = SimpleTreeNode(5, newThirdInnerNode)
         newTree.AddChild(newTree.Root, newChildNode)
-        newTree.DeleteNode(newChildNode)
 
-        self.assertFalse(newChildNode in newTree.Root.Children)
+        newTree.AddChild(newChildNode, newInnerNode)
 
+        newTree.AddChild(newChildNode, newSecondInnerNode)
+
+        newTree.AddChild(newChildNode, newThirdInnerNode)
+
+        newTree.AddChild(newThirdInnerNode, newFouthInnerNode)
+
+        newTree.DeleteNode(newThirdInnerNode)
+
+        self.assertFalse(newThirdInnerNode in newChildNode.Children)
+        self.assertFalse(newFouthInnerNode in newThirdInnerNode.Children)
         newTree.DeleteNode(rootNode)
 
         self.assertEqual(newTree.Root, rootNode)

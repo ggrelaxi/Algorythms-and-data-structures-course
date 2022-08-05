@@ -21,6 +21,7 @@ class SimpleTree:
 
         if NodeToDelete in parentNode.Children:
             NodeToDelete.Parent.Children.remove(NodeToDelete)
+            NodeToDelete.Children = []
 
     def GetAllNodes(self):
         nodes = []
