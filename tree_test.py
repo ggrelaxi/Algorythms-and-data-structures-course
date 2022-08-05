@@ -27,6 +27,10 @@ class SimpleTreeTest(unittest.TestCase):
 
         self.assertFalse(newChildNode in newTree.Root.Children)
 
+        newTree.DeleteNode(rootNode)
+
+        self.assertEqual(newTree.Root, rootNode)
+
     def testGetAllNode(self):
         rootNode = SimpleTreeNode(1, None)
         newTree = SimpleTree(rootNode)
