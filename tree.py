@@ -61,13 +61,15 @@ class SimpleTree:
 
     def Count(self):
         def iter(node):
+            if self.Root == None:
+                return 0
             if len(node.Children) == 0:
                 return 1
 
             innerCount = 0
             for i in range(len(node.Children)):
                 innerCount += iter(node.Children[i])
-            return innerCount + 1
+            return 1 + innerCount
         return iter(self.Root)
 
     def LeafCount(self):

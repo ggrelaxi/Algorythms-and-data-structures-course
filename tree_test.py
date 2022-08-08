@@ -1,3 +1,4 @@
+from hashlib import new
 from logging import root
 import unittest
 from tree import SimpleTree, SimpleTreeNode
@@ -21,28 +22,39 @@ class SimpleTreeTest(unittest.TestCase):
     def testDeleteNotRootNode(self):
         rootNode = SimpleTreeNode(1, None)
         newTree = SimpleTree(rootNode)
-        newChildNode = SimpleTreeNode(2, newTree.Root)
-        newInnerNode = SimpleTreeNode(3, newChildNode)
-        newSecondInnerNode = SimpleTreeNode(3, newChildNode)
-        newThirdInnerNode = SimpleTreeNode(4, newChildNode)
-        newFouthInnerNode = SimpleTreeNode(5, newThirdInnerNode)
-        newTree.AddChild(newTree.Root, newChildNode)
 
-        newTree.AddChild(newChildNode, newInnerNode)
+        level2firstNode = SimpleTreeNode('n1', newTree.Root)
+        level2secondNode = SimpleTreeNode('n2', newTree.Root)
+        level2ThirdNode = SimpleTreeNode('n3', newTree.Root)
 
-        newTree.AddChild(newChildNode, newSecondInnerNode)
+        newTree.AddChild(newTree.Root, level2firstNode)
+        newTree.AddChild(newTree.Root, level2secondNode)
+        newTree.AddChild(newTree.Root, level2ThirdNode)
 
-        newTree.AddChild(newChildNode, newThirdInnerNode)
+        level3firstNode = SimpleTreeNode('n12', level2firstNode)
+        level3secondNode = SimpleTreeNode('n13', level2firstNode)
 
-        newTree.AddChild(newThirdInnerNode, newFouthInnerNode)
+        newTree.AddChild(level2firstNode, level3firstNode)
+        newTree.AddChild(level2firstNode, level3secondNode)
 
-        newTree.DeleteNode(newThirdInnerNode)
+        self.assertEqual(newTree.Count(), 6)
 
-        self.assertFalse(newThirdInnerNode in newChildNode.Children)
-        self.assertFalse(newFouthInnerNode in newThirdInnerNode.Children)
-        newTree.DeleteNode(rootNode)
+        leve3thirdNode = SimpleTreeNode('n21', level2secondNode)
+        newTree.AddChild(level2secondNode, leve3thirdNode)
 
-        self.assertEqual(newTree.Root, rootNode)
+        self.assertEqual(newTree.Count(), 7)
+        self.assertEqual(newTree.LeafCount(), 4)
+
+        newTree.MoveNode(level2secondNode, level2ThirdNode)
+
+        self.assertEqual(newTree.Count(), 7)
+        self.assertEqual(newTree.LeafCount(), 3)
+        self.assertFalse(level2secondNode in newTree.Root.Children)
+
+        newTree.DeleteNode(leve3thirdNode)
+
+        self.assertEqual(newTree.Count(), 6)
+        self.assertEqual(newTree.LeafCount(), 3)
 
     def testGetAllNode(self):
         rootNode = SimpleTreeNode(1, None)
@@ -78,16 +90,16 @@ class SimpleTreeTest(unittest.TestCase):
         newTree = SimpleTree(rootNode)
         newChildNode = SimpleTreeNode(2, newTree.Root)
         newInnerNode = SimpleTreeNode(3, newChildNode)
+
         newSecondInnerNode = SimpleTreeNode(3, newChildNode)
         newThirdInnerNode = SimpleTreeNode(4, newChildNode)
         newTree.AddChild(newTree.Root, newChildNode)
-
         newTree.AddChild(newChildNode, newInnerNode)
 
+        self.assertEqual(newTree.Count(), 3)
+
         newTree.AddChild(newChildNode, newSecondInnerNode)
-
         newTree.AddChild(newChildNode, newThirdInnerNode)
-
         self.assertEqual(newTree.Count(), 5)
 
     def testLeafsCount(self):
@@ -105,7 +117,7 @@ class SimpleTreeTest(unittest.TestCase):
 
         newTree.AddChild(newChildNode, newThirdInnerNode)
 
-        self.assertEqual(newTree.LeafCount(), 3)
+        # self.assertEqual(newTree.Count(), 6)
 
     def testMoveNode(self):
         rootNode = SimpleTreeNode(1, None)
