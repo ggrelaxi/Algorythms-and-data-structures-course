@@ -53,6 +53,8 @@ class SimpleTreeTest(unittest.TestCase):
 
         newTree.DeleteNode(leve3thirdNode)
 
+        self.assertFalse(leve3thirdNode in level2ThirdNode.Children)
+
         self.assertEqual(newTree.Count(), 6)
         self.assertEqual(newTree.LeafCount(), 3)
 
