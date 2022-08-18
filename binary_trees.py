@@ -138,7 +138,7 @@ class BST:
 
     def Count(self):
         def iter(node):
-            if node == None:
+            if node is None:
                 return 0
 
             leftChildren = node.LeftChild
@@ -147,10 +147,10 @@ class BST:
             leftLength = 0
             rightLength = 0
 
-            if leftChildren != None:
+            if leftChildren is not None:
                 leftLength = iter(leftChildren)
 
-            if rightChildren != None:
+            if rightChildren is not None:
                 rightLength = iter(rightChildren)
 
             return 1 + leftLength + rightLength
