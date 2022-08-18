@@ -126,6 +126,26 @@ class BSTTest(unittest.TestCase):
         self.assertEqual(tree3.FindNodeByKey(13).Node.LeftChild.NodeKey, 10)
         self.assertEqual(tree3.Root.RightChild.NodeKey, 13)
 
+        root4 = BSTNode(8, 'rootKey', None)
+        tree4 = BST(root4)
+
+        tree4.AddKeyValue(4, 'n1_left')
+        tree4.AddKeyValue(12, 'n1_right')
+        tree4.AddKeyValue(10, 'n2_left')
+        tree4.AddKeyValue(14, 'n2_right')
+        tree4.AddKeyValue(13, 'n3_left')
+        tree4.AddKeyValue(15, 'n3_right')
+
+        tree4.DeleteNodeByKey(15)
+        tree4.DeleteNodeByKey(13)
+        tree4.DeleteNodeByKey(8)
+        tree4.DeleteNodeByKey(4)
+        tree4.DeleteNodeByKey(12)
+        tree4.DeleteNodeByKey(10)
+        tree4.DeleteNodeByKey(14)
+
+        self.assertEqual(tree4.Root, None)
+
 
 if __name__ == "__main__":
     unittest.main()
