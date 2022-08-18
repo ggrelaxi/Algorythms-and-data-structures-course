@@ -141,8 +141,17 @@ class BST:
             if node == None:
                 return 0
 
-            left = node.LeftChild
-            right = node.RightChild
+            leftChildren = node.LeftChild
+            rightChildren = node.RightChild
 
-            return 1 + iter(left) + iter(right)
+            leftLength = 0
+            rightLength = 0
+
+            if leftChildren != None:
+                leftLength = iter(leftChildren)
+
+            if rightChildren != None:
+                rightLength = iter(rightChildren)
+
+            return 1 + leftLength + rightLength
         return iter(self.Root)
