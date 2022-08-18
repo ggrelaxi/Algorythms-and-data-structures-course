@@ -75,12 +75,12 @@ class BST:
         def iter(node):
             if FindMax == True:
                 if node.RightChild == None:
-                    return node.NodeKey
+                    return node
                 else:
                     return iter(node.RightChild)
             else:
                 if node.LeftChild == None:
-                    return node.NodeKey
+                    return node
                 else:
                     return iter(node.LeftChild)
         return iter(FromNode)

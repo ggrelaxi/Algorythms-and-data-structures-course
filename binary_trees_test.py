@@ -43,10 +43,17 @@ class BSTTest(unittest.TestCase):
         tree.AddKeyValue(4, 'n1_left')
         tree.AddKeyValue(12, 'n1_right')
 
-        self.assertEqual(tree.FinMinMax(tree.Root, True), 12)
-        self.assertEqual(tree.FinMinMax(tree.Root, False), 4)
-        self.assertEqual(tree.FinMinMax(root.LeftChild, True), 4)
-        self.assertEqual(tree.FinMinMax(root.RightChild, False), 12)
+        maxNode = tree.FindNodeByKey(12)
+        minNode = tree.FindNodeByKey(4)
+
+        self.assertEqual(tree.FinMinMax(root, True), maxNode.Node)
+        self.assertEqual(tree.FinMinMax(root, False), minNode.Node)
+
+        tree.DeleteNodeByKey(4)
+        tree.DeleteNodeByKey(12)
+
+        self.assertEqual(tree.FinMinMax(root, True), root)
+        self.assertEqual(tree.FinMinMax(root, False), root)
 
     def testCount(self):
         root = BSTNode(8, 'rootKey', None)
