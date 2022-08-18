@@ -87,15 +87,15 @@ class BST:
 
     def DeleteNodeByKey(self, key):
         def iter(node):
-            if node.LeftChild == None and node.RightChild == None:
+            if node.LeftChild is None and node.RightChild is None:
                 return node
-            elif node.LeftChild == None and node.RightChild != None:
+            elif node.LeftChild is None and node.RightChild is not None:
                 return node
             return iter(node.LeftChild)
 
         current_node = self.FindNodeByKey(key)
 
-        if current_node.Node == None:
+        if current_node.Node is None:
             return False
 
         left = current_node.Node.LeftChild
@@ -103,36 +103,36 @@ class BST:
         current_key = current_node.Node.NodeKey
         parent = current_node.Node.Parent
 
-        if parent == None and key == current_key:
+        if parent is None and key is current_key:
             self.Root = None
             return True
 
         parent_key = current_node.Node.Parent.NodeKey
 
-        if left == None and right == None:
+        if left is None and right is None:
             if parent_key > current_key:
                 parent.LeftChild = None
                 return True
             else:
                 parent.RightChild = None
                 return True
-        elif left != None and right == None:
+        elif left is None and right is None:
             parent.LeftChild = right
             right.Parent = parent
             return True
-        elif left == None and right != None:
+        elif left is None and right is not None:
             parent.RightChild = right
             right.Parent = parent
             return True
         else:
             candidate = iter(right)
-            if candidate.LeftChild == None and candidate.RightChild == None:
+            if candidate.LeftChild is None and candidate.RightChild is None:
                 candidate.LeftChild = left
                 candidate.RightChild = right
                 parent.RightChild = candidate
                 return True
             else:
-                candidate.LeftChild = current_node.LeftChild
+                candidate.LeftChild = current_node.Node.LeftChild
                 parent.RightChild = candidate
                 return True
 

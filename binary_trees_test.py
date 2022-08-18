@@ -101,6 +101,18 @@ class BSTTest(unittest.TestCase):
 
         self.assertEqual(tree.Count(), 0)
 
+        root1 = BSTNode(8, 'rootKey', None)
+        tree1 = BST(root1)
+        tree1.AddKeyValue(4, 'n1_left')
+        tree1.AddKeyValue(12, 'n1_right')
+        tree1.AddKeyValue(10, 'n2_left')
+        tree1.AddKeyValue(14, 'n2_right')
+        tree1.AddKeyValue(15, 'n3_right')
+
+        tree1.DeleteNodeByKey(12)
+
+        self.assertEqual(tree1.Count(), 5)
+
     def testDelete(self):
         root = BSTNode(8, 'rootKey', None)
         tree = BST(root)
