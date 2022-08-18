@@ -105,30 +105,36 @@ class BST:
 
         if parent == None and key == current_key:
             self.Root = None
-            return
+            return True
 
         parent_key = current_node.Node.Parent.NodeKey
 
         if left == None and right == None:
             if parent_key > current_key:
                 parent.LeftChild = None
+                return True
             else:
                 parent.RightChild = None
+                return True
         elif left != None and right == None:
             parent.LeftChild = right
             right.Parent = parent
+            return True
         elif left == None and right != None:
             parent.RightChild = right
             right.Parent = parent
+            return True
         else:
             candidate = iter(right)
             if candidate.LeftChild == None and candidate.RightChild == None:
                 candidate.LeftChild = left
                 candidate.RightChild = right
                 parent.RightChild = candidate
+                return True
             else:
                 candidate.LeftChild = current_node.LeftChild
                 parent.RightChild = candidate
+                return True
 
     def Count(self):
         def iter(node):
