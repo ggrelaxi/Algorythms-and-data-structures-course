@@ -35,25 +35,44 @@ class BSTTest(unittest.TestCase):
         self.assertEqual(root_node_find_result.NodeHasKey, True)
         self.assertEqual(root_node_find_result.ToLeft, False)
 
+        tree.AddKeyValue(4, 'n1_left')
+
+        four_result = tree.FindNodeByKey(4)
+
+        self.assertEqual(four_result.Node.NodeKey, 4)
+        self.assertEqual(four_result.NodeHasKey, True)
+        self.assertEqual(four_result.ToLeft, False)
+
+        tree.AddKeyValue(12, 'n1_right')
+
+        tree.DeleteNodeByKey(4)
+
+        self.assertEqual(tree.FindNodeByKey(4).Node, root)
+
     def testMinMax(self):
         root = BSTNode(8, 'rootKey', None)
         tree = BST(root)
 
         self.assertEqual(tree.Root, root)
         tree.AddKeyValue(4, 'n1_left')
+        tree.AddKeyValue(3, 'n2_left')
         tree.AddKeyValue(12, 'n1_right')
 
         maxNode = tree.FindNodeByKey(12)
         minNode = tree.FindNodeByKey(4)
 
+        self.assertEqual(tree.FinMinMax(minNode.Node, True), minNode.Node)
+        self.assertEqual(tree.FinMinMax(minNode.Node, False),
+                         minNode.Node.LeftChild)
+
         self.assertEqual(tree.FinMinMax(root, True), maxNode.Node)
-        self.assertEqual(tree.FinMinMax(root, False), minNode.Node)
+        self.assertEqual(tree.FinMinMax(root, False), minNode.Node.LeftChild)
 
         tree.DeleteNodeByKey(4)
         tree.DeleteNodeByKey(12)
 
         self.assertEqual(tree.FinMinMax(root, True), root)
-        self.assertEqual(tree.FinMinMax(root, False), root)
+        self.assertEqual(tree.FinMinMax(root, False), root.LeftChild)
 
     def testCount(self):
         root = BSTNode(8, 'rootKey', None)
@@ -64,41 +83,23 @@ class BSTTest(unittest.TestCase):
         tree.Root = root
 
         self.assertEqual(tree.Count(), 1)
-
         tree.AddKeyValue(4, 'n1_left')
-
         self.assertEqual(tree.Count(), 2)
-
         tree.AddKeyValue(12, 'n1_right')
-
         self.assertEqual(tree.Count(), 3)
-
         tree.AddKeyValue(10, 'n2_left')
-
         self.assertEqual(tree.Count(), 4)
-
         tree.AddKeyValue(14, 'n2_right')
-
         self.assertEqual(tree.Count(), 5)
-
         tree.DeleteNodeByKey(14)
-
         self.assertEqual(tree.Count(), 4)
-
         tree.DeleteNodeByKey(10)
-
         self.assertEqual(tree.Count(), 3)
-
         tree.DeleteNodeByKey(12)
-
         self.assertEqual(tree.Count(), 2)
-
         tree.DeleteNodeByKey(4)
-
         self.assertEqual(tree.Count(), 1)
-
         tree.DeleteNodeByKey(8)
-
         self.assertEqual(tree.Count(), 0)
 
         root1 = BSTNode(8, 'rootKey', None)
@@ -110,29 +111,50 @@ class BSTTest(unittest.TestCase):
         tree1.AddKeyValue(15, 'n3_right')
 
         tree1.DeleteNodeByKey(12)
-
+        self.assertEqual(tree1.FindNodeByKey(14).Node.NodeKey, 14)
+        self.assertEqual(tree1.FindNodeByKey(14).NodeHasKey, True)
+        self.assertEqual(tree1.FindNodeByKey(14).ToLeft, False)
+        self.assertEqual(tree1.FindNodeByKey(14).Node.Parent.NodeKey, 8)
+        self.assertEqual(tree1.FindNodeByKey(14).Node.LeftChild.NodeKey, 10)
+        self.assertEqual(tree1.Root.RightChild.NodeKey, 14)
         self.assertEqual(tree1.Count(), 5)
+
+        root2 = BSTNode(8, 'rootKey', None)
+        tree2 = BST(root2)
+        tree2.AddKeyValue(4, 'n1_left')
+        tree2.AddKeyValue(12, 'n1_right')
+        tree2.AddKeyValue(10, 'n2_left')
+        tree2.AddKeyValue(14, 'n2_right')
+        tree2.AddKeyValue(15, 'n3_right')
+
+        tree2.DeleteNodeByKey(12)
+        self.assertEqual(tree2.Count(), 5)
+        tree2.DeleteNodeByKey(10)
+        self.assertEqual(tree2.Count(), 4)
 
     def testDelete(self):
         root = BSTNode(8, 'rootKey', None)
         tree = BST(root)
 
         tree.DeleteNodeByKey(8)
-
         self.assertEqual(tree.Root, None)
+        self.assertEqual(tree.FindNodeByKey(8).Node, None)
 
         tree.Root = root
-
         tree.AddKeyValue(4, 'n1_left')
         tree.AddKeyValue(12, 'n1_right')
 
+        tree.DeleteNodeByKey(8)
         tree.DeleteNodeByKey(4)
-
-        self.assertEqual(tree.FindNodeByKey(4).Node, root)
-
+        self.assertEqual(tree.FindNodeByKey(4).Node.NodeKey, 12)
+        self.assertEqual(tree.FindNodeByKey(4).NodeHasKey, False)
+        self.assertEqual(tree.FindNodeByKey(4).ToLeft, True)
         tree.DeleteNodeByKey(12)
-
-        self.assertEqual(tree.FindNodeByKey(12).Node, root)
+        self.assertEqual(tree.FindNodeByKey(12).Node, None)
+        self.assertEqual(tree.FindNodeByKey(12).ToLeft, False)
+        tree.DeleteNodeByKey(8)
+        self.assertEqual(tree.FindNodeByKey(8).Node, None)
+        self.assertEqual(tree.Root, None)
 
         root1 = BSTNode(8, 'rootKey', None)
         tree1 = BST(root1)
@@ -168,7 +190,6 @@ class BSTTest(unittest.TestCase):
         tree3.AddKeyValue(15, 'n3_right')
 
         tree3.DeleteNodeByKey(12)
-
         self.assertEqual(tree3.FindNodeByKey(13).Node.RightChild.NodeKey, 14)
         self.assertEqual(tree3.FindNodeByKey(13).Node.LeftChild.NodeKey, 10)
         self.assertEqual(tree3.Root.RightChild.NodeKey, 13)
@@ -184,13 +205,31 @@ class BSTTest(unittest.TestCase):
         tree4.AddKeyValue(15, 'n3_right')
 
         tree4.DeleteNodeByKey(15)
+        self.assertEqual(tree4.Count(), 6)
+        self.assertEqual(tree4.FindNodeByKey(15).Node.NodeKey, 14)
+        self.assertEqual(tree4.FindNodeByKey(15).ToLeft, False)
+        self.assertEqual(tree4.FindNodeByKey(14).Node.RightChild, None)
         tree4.DeleteNodeByKey(13)
+        self.assertEqual(tree4.Count(), 5)
+        self.assertEqual(tree4.FindNodeByKey(13).Node.NodeKey, 14)
+        self.assertEqual(tree4.FindNodeByKey(13).ToLeft, True)
+        self.assertEqual(tree4.FindNodeByKey(14).Node.LeftChild, None)
         tree4.DeleteNodeByKey(8)
+        self.assertEqual(tree4.Root.Parent, None)
+        self.assertEqual(tree4.Root.NodeKey, 10)
+        self.assertEqual(tree4.Root.LeftChild.NodeKey, 4)
+        self.assertEqual(tree4.Root.RightChild.NodeKey, 12)
+        self.assertEqual(tree4.FindNodeByKey(4).Node.Parent.NodeKey, 10)
+        self.assertEqual(tree4.FindNodeByKey(12).Node.Parent.NodeKey, 10)
+        self.assertEqual(tree4.Count(), 4)
         tree4.DeleteNodeByKey(4)
+        self.assertEqual(tree4.Count(), 3)
         tree4.DeleteNodeByKey(12)
+        self.assertEqual(tree4.Count(), 2)
         tree4.DeleteNodeByKey(10)
+        self.assertEqual(tree4.Count(), 1)
         tree4.DeleteNodeByKey(14)
-
+        self.assertEqual(tree4.Count(), 0)
         self.assertEqual(tree4.Root, None)
 
         root5 = BSTNode(8, 'rootKey', None)
@@ -198,7 +237,6 @@ class BSTTest(unittest.TestCase):
 
         self.assertEqual(tree5.DeleteNodeByKey(8), True)
         self.assertEqual(tree5.DeleteNodeByKey(8), False)
-
         self.assertEqual(tree5.Root, None)
 
 

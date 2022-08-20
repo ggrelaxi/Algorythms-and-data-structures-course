@@ -26,29 +26,30 @@ class BST:
 
     def FindNodeByKey(self, key):
         def iter(node, s_result):
-            if node == None:
+            if node is None:
                 return s_result
 
             s_result.Node = node
 
             if node.NodeKey == key:
                 s_result.NodeHasKey = True
+                s_result.ToLeft = False
                 return s_result
 
             left = node.LeftChild
             right = node.RightChild
 
-            s_result.NodeHasKey = False
-
-            if node.NodeKey > key and left != None:
+            if node.NodeKey > key and left is not None:
                 return iter(left, s_result)
-            elif node.NodeKey > key and left == None:
+            elif node.NodeKey > key and left is None:
                 s_result.ToLeft = True
+                s_result.NodeHasKey = False
                 return s_result
-            elif node.NodeKey < key and right != None:
+            elif node.NodeKey <= key and right is not None:
                 return iter(right, s_result)
-            elif node.NodeKey < key and right == None:
+            elif node.NodeKey <= key and right is None:
                 s_result.ToLeft = False
+                s_result.NodeHasKey = False
                 return s_result
 
         return iter(self.Root, BSTFind())
@@ -56,13 +57,13 @@ class BST:
     def AddKeyValue(self, key, val):
         search_result = self.FindNodeByKey(key)
 
-        if search_result.Node == None:
+        if search_result.Node is None:
             self.Root = BSTNode(key, val, None)
             return True
         if search_result.Node.NodeKey == key:
             return False
 
-        if search_result.Node.NodeKey > key:
+        if search_result.Node.NodeKey >= key:
             search_result.Node.LeftChild = BSTNode(
                 key, val, search_result.Node)
             return True
@@ -74,12 +75,12 @@ class BST:
     def FinMinMax(self, FromNode, FindMax):
         def iter(node):
             if FindMax == True:
-                if node.RightChild == None:
+                if node.RightChild is None:
                     return node
                 else:
                     return iter(node.RightChild)
             else:
-                if node.LeftChild == None:
+                if node.LeftChild is None:
                     return node
                 else:
                     return iter(node.LeftChild)
@@ -87,15 +88,12 @@ class BST:
 
     def DeleteNodeByKey(self, key):
         def iter(node):
-            if node.LeftChild is None and node.RightChild is None:
-                return node
-            elif node.LeftChild is None and node.RightChild is not None:
-                return node
-            return iter(node.LeftChild)
+            if node.LeftChild is not None:
+                return iter(node.LeftChild)
+            return node
 
         current_node = self.FindNodeByKey(key)
-
-        if current_node.Node is None:
+        if current_node.NodeHasKey == False:
             return False
 
         left = current_node.Node.LeftChild
@@ -103,44 +101,66 @@ class BST:
         current_key = current_node.Node.NodeKey
         parent = current_node.Node.Parent
 
-        if parent is None and key is current_key:
-            self.Root = None
-            return True
-
-        parent_key = current_node.Node.Parent.NodeKey
-
         if left is None and right is None:
-            if parent_key > current_key:
+            if parent is None:
+                self.Root = None
+                return True
+            if parent.NodeKey >= current_key:
                 parent.LeftChild = None
                 return True
-            else:
-                parent.RightChild = None
+            parent.RightChild = None
+            return True
+
+        elif left is not None and right is None:
+            if parent is None:
+                self.Root = left
+                left.Parent = None
                 return True
-        elif left is None and right is None:
-            parent.LeftChild = right
-            right.Parent = parent
+            parent.LeftChild = left
+            left.Parent = parent
             return True
         elif left is None and right is not None:
+            if parent is None:
+                self.Root = right
+                right.Parent = None
+                return True
             parent.RightChild = right
             right.Parent = parent
             return True
+
         else:
             candidate = iter(right)
             if candidate.LeftChild is None and candidate.RightChild is None:
                 candidate.LeftChild = left
-                candidate.RightChild = right
-                parent.RightChild = candidate
+                left.Parent = candidate
+                if right != candidate:
+                    candidate.RightChild = right
+                    right.Parent = candidate
+                candidate.Parent.LeftChild = None
+                if parent is None:
+                    self.Root = candidate
+                    self.Root.Parent = None
+                else:
+                    parent.RightChild = candidate
                 return True
-            else:
-                candidate.LeftChild = current_node.Node.LeftChild
-                parent.RightChild = candidate
+            elif candidate.LeftChild is None and candidate.RightChild is not None:
+                candidate.LeftChild = left
+                if right != candidate:
+                    candidate.RightChild = right
+                    right.Parent = candidate
+
+                left.Parent = candidate
+                candidate.Parent = parent
+                if parent is None:
+                    self.Root = candidate
+                else:
+                    parent.RightChild = candidate
                 return True
 
     def Count(self):
         def iter(node):
             if node is None:
                 return 0
-
             leftChildren = node.LeftChild
             rightChildren = node.RightChild
 
