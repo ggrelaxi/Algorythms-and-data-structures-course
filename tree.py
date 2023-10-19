@@ -13,6 +13,7 @@ class SimpleTree:
 
     def AddChild(self, ParentNode, NewChild):
         ParentNode.Children.append(NewChild)
+        NewChild.Parent = ParentNode
         # pass  # ваш код добавления нового дочернего узла существующему ParentNode
 
     def DeleteNode(self, NodeToDelete):
@@ -21,6 +22,7 @@ class SimpleTree:
         parentNode = NodeToDelete.Parent
         deletedNodeIndex = parentNode.Children.index(NodeToDelete)
         parentNode.Children.pop(deletedNodeIndex)
+        NodeToDelete.Parent = None
         # pass  # ваш код удаления существующего узла NodeToDelete
 
     def GetAllNodes(self):
@@ -56,6 +58,8 @@ class SimpleTree:
         # return []
 
     def MoveNode(self, OriginalNode, NewParent):
+        if OriginalNode == self.Root:
+            return
         prevParent = OriginalNode.Parent
         prevParent.Children.pop(prevParent.Children.index(OriginalNode))
         OriginalNode.Parent = NewParent

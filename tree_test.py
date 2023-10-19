@@ -13,6 +13,7 @@ class SimpleTreeTest(unittest.TestCase):
         newRootNode = SimpleTreeNode(1, None)
         newTree2 = SimpleTree(newRootNode)
         self.assertEqual(newTree2.Root, newRootNode)
+        self.assertEqual(newRootNode.Parent, None)
 
     def testAddChild(self):
         # проверка добавления дочернего узла для корня
@@ -22,6 +23,7 @@ class SimpleTreeTest(unittest.TestCase):
         newTree.AddChild(newRootNode, newChildNode)
 
         self.assertTrue(newChildNode in newRootNode.Children)
+        self.assertEqual(newChildNode.Parent, newRootNode)
 
     def testDeleteNode(self):
         # проверка удаления корневого узла.
@@ -39,6 +41,28 @@ class SimpleTreeTest(unittest.TestCase):
         newTree.DeleteNode(newChildNode)
 
         self.assertTrue(newChildNode not in newRootNode.Children)
+        self.assertTrue(newChildNode.Parent is None)
+        self.assertEqual(newTree.Count(), 1)
+        self.assertEqual(newTree.LeafCount(), 1)
+
+        newChildNode2 = SimpleTreeNode(3, newRootNode)
+        newChildNode3 = SimpleTreeNode(4, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
+        newTree.AddChild(newRootNode, newChildNode2)
+        newTree.AddChild(newRootNode, newChildNode3)
+        self.assertTrue(newTree.Count(), 4)
+        newTree.MoveNode(newChildNode, newChildNode3)
+        newTree.DeleteNode(newChildNode3)
+
+        self.assertEqual(newTree.LeafCount(), 1)
+        self.assertEqual(newTree.Count(), 2)
+        self.assertTrue(newChildNode3.Parent is not newRootNode)
+        self.assertTrue(newChildNode3 not in newRootNode.Children)
+
+        newTree.DeleteNode(newChildNode2)
+
+        self.assertEqual(newTree.LeafCount(), 1)
+        self.assertEqual(newTree.Count(), 1)
 
     def testGetListOfNodes(self):
         # получения списка узлов, в дереве из одного узла
