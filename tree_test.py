@@ -1,126 +1,158 @@
-from hashlib import new
-from logging import root
 import unittest
 from tree import SimpleTree, SimpleTreeNode
 
 
 class SimpleTreeTest(unittest.TestCase):
-    def testAddRootNode(self):
-        rootNode = SimpleTreeNode(1, None)
-        newTree = SimpleTree(rootNode)
+    def testAddRoot(self):
+        # проверка пустого корня в новом дереве
+        newTree = SimpleTree(None)
 
-        self.assertEqual(newTree.Root, rootNode)
+        self.assertEqual(newTree.Root, None)
 
-    def testAddNewNodeToCurrent(self):
-        rootNode = SimpleTreeNode(1, None)
-        newTree = SimpleTree(rootNode)
-        newChildNode = SimpleTreeNode(2, newTree.Root)
-        newTree.AddChild(newTree.Root, newChildNode)
+        # проверка корректного добавления корня дерева
+        newRootNode = SimpleTreeNode(1, None)
+        newTree2 = SimpleTree(newRootNode)
+        self.assertEqual(newTree2.Root, newRootNode)
 
-        self.assertTrue(newChildNode in newTree.Root.Children)
+    def testAddChild(self):
+        # проверка добавления дочернего узла для корня
+        newRootNode = SimpleTreeNode(1, None)
+        newTree = SimpleTree(newRootNode)
+        newChildNode = SimpleTreeNode(2, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
 
-    def testDeleteNotRootNode(self):
-        root = SimpleTreeNode(0, None)
-        tree = SimpleTree(root)
+        self.assertTrue(newChildNode in newRootNode.Children)
 
-        n1 = SimpleTreeNode(1, root)
-        tree.AddChild(root, n1)
-        n2 = SimpleTreeNode(2, root)
-        tree.AddChild(root, n2)
-        n3 = SimpleTreeNode(3, root)
-        tree.AddChild(root, n3)
-        n12 = SimpleTreeNode(2, None)
-        tree.AddChild(n1, n12)
-        n13 = SimpleTreeNode(3, None)
-        tree.AddChild(n1, n13)
-        n21 = SimpleTreeNode(4, None)
-        tree.AddChild(n2, n21)
+    def testDeleteNode(self):
+        # проверка удаления корневого узла.
 
-        tree.MoveNode(n2, n3)
-        tree.DeleteNode(n21)
+        newRootNode = SimpleTreeNode(1, None)
+        newTree = SimpleTree(newRootNode)
+        newTree.DeleteNode(newRootNode)
 
-    def testGetAllNode(self):
-        rootNode = SimpleTreeNode(1, None)
-        newTree = SimpleTree(rootNode)
-        newChildNode = SimpleTreeNode(2, newTree.Root)
-        newInnerNode = SimpleTreeNode(3, newChildNode)
-        newTree.AddChild(newTree.Root, newChildNode)
-        newTree.AddChild(newChildNode, newInnerNode)
+        self.assertEqual(newTree.Root, newRootNode)
 
+        # проверка удаления удаления узла - отстутсвие в поле Children родителя.
+
+        newChildNode = SimpleTreeNode(2, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
+        newTree.DeleteNode(newChildNode)
+
+        self.assertTrue(newChildNode not in newRootNode.Children)
+
+    def testGetListOfNodes(self):
+        # получения списка узлов, в дереве из одного узла
+
+        newRootNode = SimpleTreeNode(1, None)
+        newTree = SimpleTree(newRootNode)
+
+        self.assertEqual(len(newTree.GetAllNodes()), 1)
+        self.assertEqual(newTree.GetAllNodes(), [newRootNode])
+
+        # получения списка узлов, в дереве из двух узлов
+        newChildNode = SimpleTreeNode(2, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
+
+        self.assertEqual(len(newTree.GetAllNodes()), 2)
+        self.assertEqual(newTree.GetAllNodes(), [newRootNode, newChildNode])
+
+        # получения списка узлов, в дереве из трех узлов
+        newChildNode2 = SimpleTreeNode(3, newChildNode)
+        newChildNode3 = SimpleTreeNode(4, newChildNode)
+        newTree.AddChild(newChildNode, newChildNode2)
+        newTree.AddChild(newChildNode, newChildNode3)
+
+        self.assertEqual(len(newTree.GetAllNodes()), 4)
         self.assertEqual(newTree.GetAllNodes(), [
-                         rootNode, newChildNode, newInnerNode])
+                         newRootNode, newChildNode, newChildNode2, newChildNode3])
 
-    def testFindNodesByValue(self):
-        rootNode = SimpleTreeNode(1, None)
-        newTree = SimpleTree(rootNode)
-        newChildNode = SimpleTreeNode(2, newTree.Root)
-        newInnerNode = SimpleTreeNode(3, newChildNode)
-        newSecondInnerNode = SimpleTreeNode(3, newChildNode)
-        newThirdInnerNode = SimpleTreeNode(4, newChildNode)
-        newTree.AddChild(newTree.Root, newChildNode)
+    def testFindNodeByValue(self):
+        # Проверка поиска узла по значения, в дереве с одним узлом
+        newRootNode = SimpleTreeNode(1, None)
+        newTree = SimpleTree(newRootNode)
 
-        newTree.AddChild(newChildNode, newInnerNode)
+        self.assertEqual(newTree.FindNodesByValue(0), [])
+        self.assertEqual(newTree.FindNodesByValue(1), [newRootNode])
 
-        newTree.AddChild(newChildNode, newSecondInnerNode)
+        # Проверка поиска узла по значения, в дереве из нескольких элементов
+        newChildNode = SimpleTreeNode(2, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
 
-        newTree.AddChild(newChildNode, newThirdInnerNode)
+        self.assertEqual(newTree.FindNodesByValue(2), [newChildNode])
 
-        self.assertEqual(newTree.FindNodesByValue(
-            3), [newInnerNode, newSecondInnerNode])
+        newChildNode2 = SimpleTreeNode(1, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode2)
 
-    def testCount(self):
-        rootNode = SimpleTreeNode(1, None)
-        newTree = SimpleTree(rootNode)
-        newChildNode = SimpleTreeNode(2, newTree.Root)
-        newInnerNode = SimpleTreeNode(3, newChildNode)
+        self.assertEqual(newTree.FindNodesByValue(1),
+                         [newRootNode, newChildNode2])
 
-        newSecondInnerNode = SimpleTreeNode(3, newChildNode)
-        newThirdInnerNode = SimpleTreeNode(4, newChildNode)
-        newTree.AddChild(newTree.Root, newChildNode)
-        newTree.AddChild(newChildNode, newInnerNode)
+    def testMoveNode(self):
+        # проверка перемещения узла
+        newRootNode = SimpleTreeNode(1, None)
+        newTree = SimpleTree(newRootNode)
+        newChildNode = SimpleTreeNode(2, newRootNode)
+        newChildNode2 = SimpleTreeNode(3, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
+        newTree.AddChild(newRootNode, newChildNode2)
+
+        newTree.MoveNode(newChildNode, newChildNode2)
+
+        self.assertEqual(newTree.Count(), 3)
+        self.assertEqual(newTree.LeafCount(), 1)
+        self.assertTrue(newChildNode not in newRootNode.Children)
+        self.assertTrue(newChildNode.Parent != newRootNode)
+        self.assertTrue(newChildNode.Parent == newChildNode2)
+        self.assertTrue(newChildNode in newChildNode2.Children)
+
+    def testCountNodes(self):
+        # проверка пустого дерева
+        newTree = SimpleTree(None)
+
+        self.assertEqual(newTree.Count(), 0)
+
+        # проверка дерева с одним корнем
+        newRootNode = SimpleTreeNode(1, None)
+        newTree.Root = newRootNode
+
+        self.assertEqual(newTree.Count(), 1)
+
+        # проверка дерева с дочерними узлами
+
+        newChildNode = SimpleTreeNode(2, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
+
+        self.assertEqual(newTree.Count(), 2)
+
+        newChildNode2 = SimpleTreeNode(3, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode2)
 
         self.assertEqual(newTree.Count(), 3)
 
-        newTree.AddChild(newChildNode, newSecondInnerNode)
-        newTree.AddChild(newChildNode, newThirdInnerNode)
-        self.assertEqual(newTree.Count(), 5)
+    def testLeafCount(self):
+        # проверка пустого дерева
+        newTree = SimpleTree(None)
 
-    def testLeafsCount(self):
-        rootNode = SimpleTreeNode(1, None)
-        newTree = SimpleTree(rootNode)
-        newChildNode = SimpleTreeNode(2, newTree.Root)
-        newInnerNode = SimpleTreeNode(3, newChildNode)
-        newSecondInnerNode = SimpleTreeNode(3, newChildNode)
-        newThirdInnerNode = SimpleTreeNode(4, newChildNode)
-        newTree.AddChild(newTree.Root, newChildNode)
+        self.assertEqual(newTree.LeafCount(), 0)
 
-        newTree.AddChild(newChildNode, newInnerNode)
+        # проверка дерева с одним корнем
+        newRootNode = SimpleTreeNode(1, None)
+        newTree.Root = newRootNode
 
-        newTree.AddChild(newChildNode, newSecondInnerNode)
+        self.assertEqual(newTree.LeafCount(), 1)
 
-        newTree.AddChild(newChildNode, newThirdInnerNode)
+        # проверка с одним дочерним узлом
 
-        # self.assertEqual(newTree.Count(), 6)
+        newChildNode = SimpleTreeNode(2, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode)
 
-    def testMoveNode(self):
-        rootNode = SimpleTreeNode(1, None)
-        newTree = SimpleTree(rootNode)
-        newChildNode = SimpleTreeNode(2, newTree.Root)
-        newInnerNode = SimpleTreeNode(3, newChildNode)
-        newSecondInnerNode = SimpleTreeNode(3, newChildNode)
-        newThirdInnerNode = SimpleTreeNode(4, newChildNode)
-        newTree.AddChild(newTree.Root, newChildNode)
+        self.assertEqual(newTree.LeafCount(), 1)
 
-        newTree.AddChild(newChildNode, newInnerNode)
+        # проверка с более чем 1 дочерним узлом
 
-        newTree.AddChild(newChildNode, newSecondInnerNode)
+        newChildNode2 = SimpleTreeNode(3, newRootNode)
+        newTree.AddChild(newRootNode, newChildNode2)
 
-        newTree.AddChild(newChildNode, newThirdInnerNode)
-
-        newTree.MoveNode(newThirdInnerNode, rootNode)
-
-        self.assertTrue(newThirdInnerNode in rootNode.Children)
-        self.assertTrue(newThirdInnerNode not in newChildNode.Children)
+        self.assertEqual(newTree.LeafCount(), 2)
 
 
 if __name__ == "__main__":

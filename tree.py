@@ -9,80 +9,87 @@ class SimpleTreeNode:
 class SimpleTree:
 
     def __init__(self, root):
-        self.Root = root
+        self.Root = root  # корень, может быть None
 
     def AddChild(self, ParentNode, NewChild):
-        NewChild.Parent = ParentNode
         ParentNode.Children.append(NewChild)
+        # pass  # ваш код добавления нового дочернего узла существующему ParentNode
 
     def DeleteNode(self, NodeToDelete):
-        if NodeToDelete == self.Root:
+        if (NodeToDelete == self.Root):
             return
         parentNode = NodeToDelete.Parent
-
-        if NodeToDelete in parentNode.Children:
-            NodeToDelete.Parent.Children.remove(NodeToDelete)
-            NodeToDelete.Children = []
+        deletedNodeIndex = parentNode.Children.index(NodeToDelete)
+        parentNode.Children.pop(deletedNodeIndex)
+        # pass  # ваш код удаления существующего узла NodeToDelete
 
     def GetAllNodes(self):
-        nodes = []
+        listOfNodes = []
 
-        def iter(node, accumulator):
-            accumulator.append(node)
-            if len(node.Children) == 0:
-                return
+        if self.Root is None:
+            return listOfNodes
 
-            for i in range(len(node.Children)):
-                iter(node.Children[i], accumulator)
+        nodes = [self.Root]
 
-        iter(self.Root, nodes)
+        while (len(nodes) > 0):
+            lastNode = nodes.pop(0)
+            listOfNodes.append(lastNode)
+            nodes.extend(lastNode.Children)
 
-        return nodes
+        return listOfNodes
+        # ваш код выдачи всех узлов дерева в определённом порядке
+        # return []
 
     def FindNodesByValue(self, val):
-        nodes = []
+        if self.Root is None:
+            return []
 
-        def iter(node, accumulator):
+        def iter(node, acc):
             if node.NodeValue == val:
-                accumulator.append(node)
-            if len(node.Children) == 0:
-                return
+                acc.append(node)
+            for childNode in node.Children:
+                iter(childNode, acc)
+            return acc
 
-            for i in range(len(node.Children)):
-                iter(node.Children[i], accumulator)
-
-        iter(self.Root, nodes)
-
-        return nodes
+        return iter(self.Root, [])
+        # ваш код поиска узлов по значению
+        # return []
 
     def MoveNode(self, OriginalNode, NewParent):
-        originalParent = OriginalNode.Parent
-        originalParent.Children.remove(OriginalNode)
+        prevParent = OriginalNode.Parent
+        prevParent.Children.pop(prevParent.Children.index(OriginalNode))
+        OriginalNode.Parent = NewParent
         NewParent.Children.append(OriginalNode)
+        # ваш код перемещения узла вместе с его поддеревом --
+        # в качестве дочернего для узла NewParent
+        # pass
 
     def Count(self):
+        if self.Root is None:
+            return 0
+
         def iter(node):
-            if self.Root == None:
-                return 0
             if len(node.Children) == 0:
                 return 1
 
-            innerCount = 0
-            for i in range(len(node.Children)):
-                innerCount += iter(node.Children[i])
-            return 1 + innerCount
+            sum = 1
+            for childNode in node.Children:
+                sum = sum + iter(childNode)
+            return sum
+
         return iter(self.Root)
 
     def LeafCount(self):
         def iter(node):
+            if node is None:
+                return 0
             if len(node.Children) == 0:
                 return 1
 
-            innerCount = 0
+            sum = 0
+            for childNode in node.Children:
+                sum += iter(childNode)
 
-            for i in range(len(node.Children)):
-                innerCount += iter(node.Children[i])
-
-            return innerCount
+            return sum
 
         return iter(self.Root)
