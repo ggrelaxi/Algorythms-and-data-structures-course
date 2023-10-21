@@ -59,7 +59,7 @@ class BST:
             return
 
         if find.NodeHasKey == True:
-            find.Node.NodeValue = val
+            return False
 
         if find.NodeHasKey == False:
             if find.ToLeft == True:

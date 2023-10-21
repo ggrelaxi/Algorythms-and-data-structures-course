@@ -25,6 +25,12 @@ class BSTTest(unittest.TestCase):
         self.assertEqual(tree.Root.NodeValue, 1)
         self.assertEqual(tree.Count(), 1)
 
+    def testAddExistedKey(self):
+        tree = BST(None)
+        tree.AddKeyValue(1, 1)
+
+        self.assertEqual(tree.AddKeyValue(1, 1), False)
+
     def testAddLeftChild(self):
         tree = BST(None)
         tree.AddKeyValue(2, 2)
