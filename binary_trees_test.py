@@ -31,6 +31,27 @@ class BSTTest(unittest.TestCase):
 
         self.assertEqual(tree.AddKeyValue(1, 1), False)
 
+    def testAddInnerKey(self):
+        tree = BST(None)
+        tree.AddKeyValue(4, 4)
+        tree.AddKeyValue(3, 3)
+        tree.AddKeyValue(8, 8)
+        tree.AddKeyValue(5, 5)
+
+        self.assertEqual(tree.FindNodeByKey(8).Node.LeftChild.NodeKey, 5)
+
+        tree.AddKeyValue(6, 6)
+
+        self.assertEqual(tree.FindNodeByKey(5).Node.RightChild.NodeKey, 6)
+
+        tree.AddKeyValue(10, 10)
+
+        self.assertEqual(tree.FindNodeByKey(8).Node.RightChild.NodeKey, 10)
+
+        tree.AddKeyValue(9, 9)
+
+        self.assertEqual(tree.FindNodeByKey(10).Node.LeftChild.NodeKey, 9)
+
     def testAddLeftChild(self):
         tree = BST(None)
         tree.AddKeyValue(2, 2)

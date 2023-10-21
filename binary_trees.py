@@ -62,10 +62,11 @@ class BST:
             return False
 
         if find.NodeHasKey == False:
+            newNode = BSTNode(key, val, find.Node)
             if find.ToLeft == True:
-                find.Node.LeftChild = BSTNode(key, val, find.Node)
+                find.Node.LeftChild = newNode
             else:
-                find.Node.RightChild = BSTNode(key, val, find.Node)
+                find.Node.RightChild = newNode
 
         # добавляем ключ-значение в дерево
         # return False  # если ключ уже есть
