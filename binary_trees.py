@@ -25,153 +25,132 @@ class BST:
         self.Root = node  # корень дерева, или None
 
     def FindNodeByKey(self, key):
-        def iter(node, s_result):
+        def iter(node):
             if node is None:
-                return s_result
+                return BSTFind()
 
-            s_result.Node = node
+            result = BSTFind()
+            result.Node = node
 
             if node.NodeKey == key:
-                s_result.NodeHasKey = True
-                s_result.ToLeft = False
-                return s_result
+                result.NodeHasKey = True
 
-            left = node.LeftChild
-            right = node.RightChild
+            if key < node.NodeKey:
+                if node.LeftChild is not None:
+                    return iter(node.LeftChild)
+                else:
+                    result.ToLeft = True
 
-            if node.NodeKey > key and left is not None:
-                return iter(left, s_result)
-            elif node.NodeKey > key and left is None:
-                s_result.ToLeft = True
-                s_result.NodeHasKey = False
-                return s_result
-            elif node.NodeKey <= key and right is not None:
-                return iter(right, s_result)
-            elif node.NodeKey <= key and right is None:
-                s_result.ToLeft = False
-                s_result.NodeHasKey = False
-                return s_result
+            if key > node.NodeKey:
+                if node.RightChild is not None:
+                    return iter(node.RightChild)
 
-        return iter(self.Root, BSTFind())
+            return result
+
+        return iter(self.Root)
+        # ищем в дереве узел и сопутствующую информацию по ключу
+        # return None # возвращает BSTFind
 
     def AddKeyValue(self, key, val):
-        search_result = self.FindNodeByKey(key)
+        find = self.FindNodeByKey(key)
 
-        if search_result.Node is None:
+        if find.Node is None:
             self.Root = BSTNode(key, val, None)
-            return True
-        if search_result.Node.NodeKey == key:
-            return False
+            return
 
-        if search_result.Node.NodeKey >= key:
-            search_result.Node.LeftChild = BSTNode(
-                key, val, search_result.Node)
-            return True
-        elif search_result.Node.NodeKey < key:
-            search_result.Node.RightChild = BSTNode(
-                key, val, search_result.Node)
-            return True
+        if find.NodeHasKey == True:
+            find.Node.NodeValue = val
+
+        if find.NodeHasKey == False:
+            if find.ToLeft == True:
+                find.Node.LeftChild = BSTNode(key, val, find.Node)
+            else:
+                find.Node.RightChild = BSTNode(key, val, find.Node)
+
+        # добавляем ключ-значение в дерево
+        # return False  # если ключ уже есть
 
     def FinMinMax(self, FromNode, FindMax):
         def iter(node):
             if FindMax == True:
                 if node.RightChild is None:
                     return node
-                else:
-                    return iter(node.RightChild)
+                return iter(node.RightChild)
             else:
                 if node.LeftChild is None:
                     return node
-                else:
-                    return iter(node.LeftChild)
+                return iter(node.LeftChild)
+
         return iter(FromNode)
 
-    def DeleteNodeByKey(self, key):
-        def iter(node):
-            if node.LeftChild is not None:
-                return iter(node.LeftChild)
-            return node
+        # ищем максимальный/минимальный ключ в поддереве
+        # возвращается объект типа BSTNode
+        # return None
 
-        current_node = self.FindNodeByKey(key)
-        if current_node.NodeHasKey == False:
+    def DeleteNodeByKey(self, key):
+        findNode = self.FindNodeByKey(key).Node
+
+        if findNode is None:
             return False
 
-        left = current_node.Node.LeftChild
-        right = current_node.Node.RightChild
-        current_key = current_node.Node.NodeKey
-        parent = current_node.Node.Parent
-
-        if left is None and right is None:
-            if parent is None:
-                self.Root = None
-                return True
-            if parent.NodeKey >= current_key:
-                parent.LeftChild = None
-                return True
-            parent.RightChild = None
+        if findNode == self.Root:
+            self.Root = None
             return True
 
-        elif left is not None and right is None:
-            if parent is None:
-                self.Root = left
-                left.Parent = None
-                return True
-            parent.LeftChild = left
-            left.Parent = parent
-            return True
-        elif left is None and right is not None:
-            if parent is None:
-                self.Root = right
-                right.Parent = None
-                return True
-            parent.RightChild = right
-            right.Parent = parent
+        if findNode.NodeKey != key:
+            return False
+
+        parent = findNode.Parent
+        leftChildren = findNode.LeftChild
+        rightChildren = findNode.RightChild
+
+        minNodeFromRightChildren = self.FinMinMax(rightChildren, False)
+        candidateParent = minNodeFromRightChildren.Parent
+        # лист в левой ветке узла приемника.
+        if minNodeFromRightChildren.LeftChild is None and minNodeFromRightChildren.RightChild is None:
+            if findNode == parent.LeftChild:
+                parent.LeftChild = minNodeFromRightChildren
+            if findNode == parent.RightChild:
+                parent.RightChild = minNodeFromRightChildren
+
+            if minNodeFromRightChildren == candidateParent.LeftChild:
+                candidateParent.LeftChild = None
+            if minNodeFromRightChildren == candidateParent.RightChild:
+                candidateParent.RightChild = None
+
+            minNodeFromRightChildren.LeftChild = leftChildren
+            minNodeFromRightChildren.RightChild = rightChildren
             return True
 
-        else:
-            candidate = iter(right)
-            if candidate.LeftChild is None and candidate.RightChild is None:
-                candidate.LeftChild = left
-                left.Parent = candidate
-                if right != candidate:
-                    candidate.RightChild = right
-                    right.Parent = candidate
-                candidate.Parent.LeftChild = None
-                if parent is None:
-                    self.Root = candidate
-                    self.Root.Parent = None
-                else:
-                    parent.RightChild = candidate
-                return True
-            elif candidate.LeftChild is None and candidate.RightChild is not None:
-                candidate.LeftChild = left
-                if right != candidate:
-                    candidate.RightChild = right
-                    right.Parent = candidate
+        # узел только с правым потомком
+        if minNodeFromRightChildren.LeftChild is None and minNodeFromRightChildren.RightChild is not None:
+            if findNode == parent.LeftChild:
+                parent.LeftChild = minNodeFromRightChildren
+            if findNode == parent.RightChild:
+                parent.RightChild = minNodeFromRightChildren
 
-                left.Parent = candidate
-                candidate.Parent = parent
-                if parent is None:
-                    self.Root = candidate
-                else:
-                    parent.RightChild = candidate
-                return True
+            if minNodeFromRightChildren == candidateParent.LeftChild:
+                candidateParent.LeftChild = minNodeFromRightChildren.RightChild
+                minNodeFromRightChildren.RightChild.parent = candidateParent.LeftChild
+            if minNodeFromRightChildren == candidateParent.RightChild:
+                candidateParent.RightChild = minNodeFromRightChildren.RightChild
+                minNodeFromRightChildren.RightChild.parent = candidateParent.RightChild
+
+            minNodeFromRightChildren.LeftChild = leftChildren
+            minNodeFromRightChildren.RightChild = rightChildren
+            leftChildren.Parent = minNodeFromRightChildren
+            rightChildren.Parent = minNodeFromRightChildren
+            minNodeFromRightChildren.Parent = parent
+            return True
+
+        # удаляем узел по ключу
+        # return False  # если узел не найден
 
     def Count(self):
         def iter(node):
             if node is None:
                 return 0
-            leftChildren = node.LeftChild
-            rightChildren = node.RightChild
+            return 1 + iter(node.LeftChild) + iter(node.RightChild)
 
-            leftLength = 0
-            rightLength = 0
-
-            if leftChildren is not None:
-                leftLength = iter(leftChildren)
-
-            if rightChildren is not None:
-                rightLength = iter(rightChildren)
-
-            return 1 + leftLength + rightLength
         return iter(self.Root)
+        # количество узлов в дереве
