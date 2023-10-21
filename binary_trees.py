@@ -56,7 +56,7 @@ class BST:
 
         if find.Node is None:
             self.Root = BSTNode(key, val, None)
-            return
+            return True
 
         if find.NodeHasKey == True:
             return False
@@ -67,6 +67,7 @@ class BST:
                 find.Node.LeftChild = newNode
             else:
                 find.Node.RightChild = newNode
+            return True
 
         # добавляем ключ-значение в дерево
         # return False  # если ключ уже есть

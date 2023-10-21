@@ -55,7 +55,7 @@ class BSTTest(unittest.TestCase):
     def testAddLeftChild(self):
         tree = BST(None)
         tree.AddKeyValue(2, 2)
-        tree.AddKeyValue(1, 1)
+        self.assertEqual(tree.AddKeyValue(1, 1), True)
 
         self.assertEqual(tree.Count(), 2)
         findResult = tree.FindNodeByKey(1)
