@@ -20,8 +20,8 @@ class BSTTest(unittest.TestCase):
     def testAddRootNode(self):
         tree = BST(None)
 
-        self.assertEqual(tree.AddKeyValue(1, 1), True)
-        self.assertEqual(tree.AddKeyValue(1, 1), False)
+        tree.AddKeyValue(1, 1)
+
         self.assertEqual(tree.Root.NodeKey, 1)
         self.assertEqual(tree.Root.NodeValue, 1)
         self.assertEqual(tree.Count(), 1)
@@ -31,6 +31,7 @@ class BSTTest(unittest.TestCase):
 
         # не совсем понятно по формулировке задания, что должна возвращать функция, если ключ существует
         self.assertEqual(tree.AddKeyValue(1, 1), True)
+        self.assertEqual(tree.AddKeyValue(1, 1), False)
         self.assertEqual(tree.Count(), 1)
 
     def testAddLeftChild(self):
