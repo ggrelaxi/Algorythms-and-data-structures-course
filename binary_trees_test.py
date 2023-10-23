@@ -20,8 +20,8 @@ class BSTTest(unittest.TestCase):
     def testAddRootNode(self):
         tree = BST(None)
 
-        tree.AddKeyValue(1, 1)
-
+        self.assertEqual(tree.AddKeyValue(1, 1), True)
+        self.assertEqual(tree.AddKeyValue(1, 1), False)
         self.assertEqual(tree.Root.NodeKey, 1)
         self.assertEqual(tree.Root.NodeValue, 1)
         self.assertEqual(tree.Count(), 1)
