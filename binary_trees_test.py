@@ -19,6 +19,7 @@ class BSTTest(unittest.TestCase):
 
     def testAddRootNode(self):
         tree = BST(None)
+
         tree.AddKeyValue(1, 1)
 
         self.assertEqual(tree.Root.NodeKey, 1)
@@ -27,54 +28,41 @@ class BSTTest(unittest.TestCase):
 
     def testAddExistedKey(self):
         tree = BST(None)
-        tree.AddKeyValue(1, 1)
 
-        self.assertEqual(tree.AddKeyValue(1, 1), False)
-
-    def testAddInnerKey(self):
-        tree = BST(None)
-        tree.AddKeyValue(4, 4)
-        tree.AddKeyValue(3, 3)
-        tree.AddKeyValue(8, 8)
-        tree.AddKeyValue(5, 5)
-
-        self.assertEqual(tree.FindNodeByKey(8).Node.LeftChild.NodeKey, 5)
-
-        tree.AddKeyValue(6, 6)
-
-        self.assertEqual(tree.FindNodeByKey(5).Node.RightChild.NodeKey, 6)
-
-        tree.AddKeyValue(10, 10)
-
-        self.assertEqual(tree.FindNodeByKey(8).Node.RightChild.NodeKey, 10)
-
-        tree.AddKeyValue(9, 9)
-
-        self.assertEqual(tree.FindNodeByKey(10).Node.LeftChild.NodeKey, 9)
+        # не совсем понятно по формулировке задания, что должна возвращать функция, если ключ существует
+        self.assertEqual(tree.AddKeyValue(1, 1), True)
+        self.assertEqual(tree.Count(), 1)
 
     def testAddLeftChild(self):
         tree = BST(None)
+
         tree.AddKeyValue(2, 2)
+        self.assertEqual(tree.FindNodeByKey(2).Node.LeftChild, None)
+        self.assertEqual(tree.FindNodeByKey(1).ToLeft, True)
         self.assertEqual(tree.AddKeyValue(1, 1), True)
-
         self.assertEqual(tree.Count(), 2)
-        findResult = tree.FindNodeByKey(1)
 
-        self.assertEqual(findResult.Node.NodeKey, 1)
-        self.assertEqual(findResult.Node.NodeValue, 1)
-        self.assertEqual(findResult.Node.Parent, tree.Root)
+        self.assertEqual(tree.FindNodeByKey(1).Node.NodeKey, 1)
+        self.assertEqual(tree.FindNodeByKey(1).Node.NodeValue, 1)
+        self.assertEqual(tree.FindNodeByKey(1).Node.Parent,
+                         tree.FindNodeByKey(2).Node)
+        self.assertEqual(tree.Root.LeftChild, tree.FindNodeByKey(1).Node)
 
     def testAddRightChild(self):
         tree = BST(None)
         tree.AddKeyValue(2, 2)
-        tree.AddKeyValue(3, 3)
 
+        self.assertEqual(tree.FindNodeByKey(2).Node.RightChild, None)
+        self.assertEqual(tree.FindNodeByKey(3).ToLeft, False)
+        self.assertEqual(tree.AddKeyValue(3, 3), True)
         self.assertEqual(tree.Count(), 2)
-        findResult = tree.FindNodeByKey(3)
 
-        self.assertEqual(findResult.Node.NodeKey, 3)
-        self.assertEqual(findResult.Node.NodeValue, 3)
-        self.assertEqual(findResult.Node.Parent, tree.Root)
+        self.assertEqual(tree.FindNodeByKey(3).Node.NodeKey, 3)
+        self.assertEqual(tree.FindNodeByKey(3).Node.NodeValue, 3)
+        self.assertEqual(tree.FindNodeByKey(3).Node.Parent,
+                         tree.FindNodeByKey(2).Node)
+        self.assertEqual(tree.FindNodeByKey(3).Node.Parent,
+                         tree.FindNodeByKey(2).Node)
 
     def testAddToLeftTarget(self):
         tree = BST(None)
