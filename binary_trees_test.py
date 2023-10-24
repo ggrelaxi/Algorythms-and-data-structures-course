@@ -122,17 +122,16 @@ class BSTTest(unittest.TestCase):
     def testFindMin(self):
         tree = BST(None)
         tree.AddKeyValue(4, 4)
-        tree.AddKeyValue(3, 3)
         tree.AddKeyValue(5, 5)
         tree.AddKeyValue(2, 2)
+        tree.AddKeyValue(3, 3)
 
         result = tree.FinMinMax(tree.Root, False)
-
         self.assertEqual(result.NodeKey, 2)
         self.assertEqual(result.NodeValue, 2)
-        self.assertEqual(result.Parent.NodeKey, 3)
+        self.assertEqual(result.Parent.NodeKey, 4)
         self.assertEqual(result.LeftChild, None)
-        self.assertEqual(result.RightChild, None)
+        self.assertEqual(result.RightChild.NodeKey, 3)
 
         tree.AddKeyValue(1, 1)
 
@@ -143,6 +142,7 @@ class BSTTest(unittest.TestCase):
         self.assertEqual(resultFromNode.NodeKey, 1)
         self.assertEqual(resultFromNode.NodeValue, 1)
         self.assertEqual(resultFromNode.Parent.NodeKey, 2)
+        self.assertEqual(resultFromNode.Parent.LeftChild, resultFromNode)
         self.assertEqual(resultFromNode.LeftChild, None)
         self.assertEqual(resultFromNode.RightChild, None)
 
@@ -153,27 +153,109 @@ class BSTTest(unittest.TestCase):
         self.assertEqual(tree.DeleteNodeByKey(1), True)
         self.assertEqual(tree.DeleteNodeByKey(1), False)
 
-    def testDeleteNodeFromChildren(self):
+    # def testDeleteNodeFromChildren(self):
+    #     tree = BST(None)
+    #     tree.AddKeyValue(4, 4)
+    #     tree.AddKeyValue(3, 3)
+    #     tree.AddKeyValue(7, 7)
+    #     tree.AddKeyValue(10, 10)
+    #     tree.AddKeyValue(8, 8)
+    #     tree.AddKeyValue(13, 13)
+    #     tree.AddKeyValue(11, 11)
+    #     tree.AddKeyValue(12, 12)
+
+    #     result = tree.DeleteNodeByKey(10)
+    #     result2 = tree.DeleteNodeByKey(10)
+
+    #     self.assertEqual(result, True)
+    #     self.assertEqual(result2, False)
+    #     self.assertEqual(tree.FindNodeByKey(10).NodeHasKey, False)
+    #     self.assertEqual(result.Parent, None)
+    #     self.assertEqual(result.LeftChild, None)
+    #     self.assertEqual(result.RightChild, None)
+
+    #     self.assertEqual(tree.FindNodeByKey(7).Node.RightChild.NodeKey, 11)
+    #     self.assertEqual(tree.FindNodeByKey(11).Node.Parent.NodeKey, 7)
+    #     self.assertEqual(tree.FindNodeByKey(8).Node.Parent.NodeKey, 11)
+    #     self.assertEqual(tree.FindNodeByKey(13).Node.Parent.NodeKey, 11)
+
+    # Проверка удаления корневой ноды
+    def testDeletedRootNode(self):
         tree = BST(None)
-        tree.AddKeyValue(4, 4)
+
+        self.assertEqual(tree.DeleteNodeByKey(1), False)
+
+        tree.AddKeyValue(1, 1)
+
+        rootNode = tree.FindNodeByKey(1)
+
+        self.assertEqual(tree.DeleteNodeByKey(1), True)
+        self.assertEqual(tree.DeleteNodeByKey(1), False)
+        self.assertEqual(tree.Count(), 0)
+        self.assertEqual(tree.Root, None)
+        self.assertEqual(rootNode.Node.Parent, None)
+
+    # Проверка удаления листовой ноды
+    def testListNode(self):
+        tree = BST(None)
+        tree.AddKeyValue(2, 2)
+        tree.AddKeyValue(1, 1)
+
+        listNode = tree.FindNodeByKey(1).Node
+        rootNode = tree.FindNodeByKey(2).Node
+
+        self.assertEqual(tree.DeleteNodeByKey(1), True)
+        self.assertEqual(tree.DeleteNodeByKey(1), False)
+        self.assertEqual(rootNode.LeftChild, None)
+        self.assertEqual(listNode.Parent, None)
+        self.assertEqual(tree.Count(), 1)
+
+    # Проверка удаления ноды с одним левым потомком
+    def testDeletedNodeWithLeftChild(self):
+        tree = BST(None)
         tree.AddKeyValue(3, 3)
-        tree.AddKeyValue(7, 7)
-        tree.AddKeyValue(10, 10)
+        tree.AddKeyValue(2, 2)
+        tree.AddKeyValue(1, 1)
+
+        deletedNode = tree.FindNodeByKey(2).Node
+        parentNode = tree.FindNodeByKey(3).Node
+        leftChildNode = tree.FindNodeByKey(1).Node
+
+        self.assertEqual(tree.DeleteNodeByKey(2), True)
+        self.assertEqual(tree.DeleteNodeByKey(2), False)
+        self.assertEqual(deletedNode.Parent, None)
+        self.assertEqual(deletedNode.LeftChild, None)
+        self.assertEqual(parentNode.LeftChild, leftChildNode)
+        self.assertEqual(leftChildNode.Parent, parentNode)
+        self.assertEqual(tree.Count(), 2)
+
+    # Проверка удаления узла с двумя потомками
+    def testDeletedNodeWithChildren(self):
+        tree = BST(None)
+        tree.AddKeyValue(3, 3)
+        tree.AddKeyValue(6, 6)
+        tree.AddKeyValue(5, 5)
         tree.AddKeyValue(8, 8)
-        tree.AddKeyValue(13, 13)
-        tree.AddKeyValue(11, 11)
-        tree.AddKeyValue(12, 12)
+        tree.AddKeyValue(7, 7)
 
-        result = tree.DeleteNodeByKey(10)
-        result2 = tree.DeleteNodeByKey(10)
+        parent = tree.FindNodeByKey(3).Node
+        deleted = tree.FindNodeByKey(6).Node
+        fiveNode = tree.FindNodeByKey(5).Node
+        eightNode = tree.FindNodeByKey(8).Node
+        sevenNode = tree.FindNodeByKey(7).Node
 
-        self.assertEqual(result, True)
-        self.assertEqual(result2, False)
-        self.assertEqual(tree.FindNodeByKey(10).NodeHasKey, False)
-        self.assertEqual(tree.FindNodeByKey(7).Node.RightChild.NodeKey, 11)
-        self.assertEqual(tree.FindNodeByKey(11).Node.Parent.NodeKey, 7)
-        self.assertEqual(tree.FindNodeByKey(8).Node.Parent.NodeKey, 11)
-        self.assertEqual(tree.FindNodeByKey(13).Node.Parent.NodeKey, 11)
+        self.assertEqual(tree.DeleteNodeByKey(6), True)
+        self.assertEqual(tree.DeleteNodeByKey(6), False)
+        self.assertEqual(parent.RightChild, sevenNode)
+        self.assertEqual(sevenNode.Parent, parent)
+        self.assertEqual(sevenNode.LeftChild, fiveNode)
+        self.assertEqual(fiveNode.Parent, sevenNode)
+        self.assertEqual(sevenNode.RightChild, eightNode)
+        self.assertEqual(eightNode.Parent, sevenNode)
+        self.assertEqual(eightNode.LeftChild, None)
+        self.assertEqual(deleted.Parent, None)
+        self.assertEqual(deleted.LeftChild, None)
+        self.assertEqual(deleted.RightChild, None)
 
 
 if __name__ == "__main__":

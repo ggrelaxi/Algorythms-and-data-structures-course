@@ -95,55 +95,73 @@ class BST:
         if findNode is None:
             return False
 
-        if findNode == self.Root:
+        if findNode == self.Root and findNode.NodeKey == key:
             self.Root = None
             return True
 
         if findNode.NodeKey != key:
+            print('hello')
             return False
 
         parent = findNode.Parent
         leftChildren = findNode.LeftChild
         rightChildren = findNode.RightChild
 
+        # удаляем листовой узел
+        if leftChildren is None and rightChildren is None:
+            findNode.Parent = None
+            if findNode == parent.LeftChild:
+                parent.LeftChild = None
+            if findNode == parent.RightChild:
+                parent.RightChild = None
+            return True
+
+        # удаляем узел с одним левым потомком
+        if leftChildren is not None and rightChildren is None:
+            findNode.Parent = None
+            findNode.LeftChild = None
+            leftChildren.Parent = parent
+            if findNode == parent.LeftChild:
+                parent.LeftChild = leftChildren
+            if findNode == parent.RightChild:
+                parent.LeftChild = leftChildren
+            return True
+
+        # Удаляем узел с одним правым потомком
+        if leftChildren is None and rightChildren is not None:
+            findNode.Parent = None
+            findNode.RightChild = None
+            rightChildren.Parent = parent
+            if findNode == parent.LeftChild:
+                parent.LeftChild = rightChildren
+            if findNode == parent.RightChild:
+                parent.LeftChild = rightChildren
+            return True
+
         minNodeFromRightChildren = self.FinMinMax(rightChildren, False)
-        candidateParent = minNodeFromRightChildren.Parent
-        # лист в левой ветке узла приемника.
-        if minNodeFromRightChildren.LeftChild is None and minNodeFromRightChildren.RightChild is None:
-            if findNode == parent.LeftChild:
-                parent.LeftChild = minNodeFromRightChildren
-            if findNode == parent.RightChild:
-                parent.RightChild = minNodeFromRightChildren
 
-            if minNodeFromRightChildren == candidateParent.LeftChild:
-                candidateParent.LeftChild = None
-            if minNodeFromRightChildren == candidateParent.RightChild:
-                candidateParent.RightChild = None
+        minNodeLeftChild = minNodeFromRightChildren.LeftChild
+        minNodeRightChild = minNodeFromRightChildren.RightChild
+        minNodeParent = minNodeFromRightChildren.Parent
 
-            minNodeFromRightChildren.LeftChild = leftChildren
-            minNodeFromRightChildren.RightChild = rightChildren
-            return True
+        if findNode == parent.LeftChild:
+            parent.LeftChild = minNodeFromRightChildren
+        if findNode == parent.RightChild:
+            parent.RightChild = minNodeFromRightChildren
+        findNode.Parent = None
+        findNode.LeftChild = None
+        findNode.RightChild = None
 
-        # узел только с правым потомком
-        if minNodeFromRightChildren.LeftChild is None and minNodeFromRightChildren.RightChild is not None:
-            if findNode == parent.LeftChild:
-                parent.LeftChild = minNodeFromRightChildren
-            if findNode == parent.RightChild:
-                parent.RightChild = minNodeFromRightChildren
+        minNodeFromRightChildren.Parent = parent
+        leftChildren.Parent = minNodeFromRightChildren
+        rightChildren.Parent = minNodeFromRightChildren
+        minNodeFromRightChildren.LeftChild = leftChildren
+        minNodeFromRightChildren.RightChild = rightChildren
 
-            if minNodeFromRightChildren == candidateParent.LeftChild:
-                candidateParent.LeftChild = minNodeFromRightChildren.RightChild
-                minNodeFromRightChildren.RightChild.parent = candidateParent.LeftChild
-            if minNodeFromRightChildren == candidateParent.RightChild:
-                candidateParent.RightChild = minNodeFromRightChildren.RightChild
-                minNodeFromRightChildren.RightChild.parent = candidateParent.RightChild
-
-            minNodeFromRightChildren.LeftChild = leftChildren
-            minNodeFromRightChildren.RightChild = rightChildren
-            leftChildren.Parent = minNodeFromRightChildren
-            rightChildren.Parent = minNodeFromRightChildren
-            minNodeFromRightChildren.Parent = parent
-            return True
+        minNodeParent.LeftChild = minNodeRightChild
+        if minNodeRightChild is not None:
+            minNodeRightChild.Parent = minNodeParent
+        return True
 
         # удаляем узел по ключу
         # return False  # если узел не найден
