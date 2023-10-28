@@ -100,7 +100,6 @@ class BST:
             return True
 
         if findNode.NodeKey != key:
-            print('hello')
             return False
 
         parent = findNode.Parent
@@ -174,3 +173,70 @@ class BST:
 
         return iter(self.Root)
         # количество узлов в дереве
+
+    def WideAllNodes(self):
+        nodes = []
+        q = []
+
+        if self.Root is not None:
+            q.append(self.Root)
+
+        def iter(q, acc):
+            if len(q) == 0:
+                return
+
+            node = q.pop()
+            acc.append(node)
+
+            leftChild = node.LeftChild
+            rightChild = node.RightChild
+
+            if (leftChild is not None):
+                q.insert(0, leftChild)
+            if (rightChild is not None):
+                q.insert(0, rightChild)
+
+            iter(q, acc)
+
+        iter(q, nodes)
+
+        return nodes
+
+    def DeepAllNodes(self, order):
+        nodes = []
+
+        def iter(node, order):
+            if node is None:
+                return
+
+            leftChild = node.LeftChild
+            rigthChild = node.RightChild
+
+            if order == 0:
+                if leftChild is not None:
+                    iter(leftChild, order)
+
+                nodes.append(node)
+
+                if rigthChild is not None:
+                    iter(rigthChild, order)
+
+            if order == 1:
+                if leftChild is not None:
+                    iter(leftChild, order)
+                if rigthChild is not None:
+                    iter(rigthChild, order)
+                nodes.append(node)
+
+            if order == 2:
+                nodes.append(node)
+
+                if leftChild is not None:
+                    iter(leftChild, order)
+
+                if rigthChild is not None:
+                    iter(rigthChild, order)
+
+        iter(self.Root, order)
+
+        return nodes

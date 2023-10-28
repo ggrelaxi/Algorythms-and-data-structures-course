@@ -257,6 +257,82 @@ class BSTTest(unittest.TestCase):
         self.assertEqual(deleted.LeftChild, None)
         self.assertEqual(deleted.RightChild, None)
 
+    def testWideAllNodes(self):
+        tree = BST(None)
+
+        self.assertEqual(len(tree.WideAllNodes()), 0)
+        self.assertEqual(tree.WideAllNodes(), [])
+
+        tree.AddKeyValue(3, 3)
+        tree.AddKeyValue(2, 2)
+        tree.AddKeyValue(4, 4)
+
+        self.assertEqual(len(tree.WideAllNodes()), 3)
+        self.assertEqual(tree.WideAllNodes(), [tree.FindNodeByKey(
+            3).Node, tree.FindNodeByKey(2).Node, tree.FindNodeByKey(4).Node])
+
+        tree.AddKeyValue(1, 1)
+        self.assertEqual(len(tree.WideAllNodes()), 4)
+        self.assertEqual(tree.WideAllNodes(), [tree.FindNodeByKey(
+            3).Node, tree.FindNodeByKey(2).Node, tree.FindNodeByKey(4).Node, tree.FindNodeByKey(1).Node])
+
+    def testDeepAllNodes(self):
+        tree = BST(None)
+
+        self.assertEqual(len(tree.DeepAllNodes(0)), 0)
+        self.assertEqual(tree.DeepAllNodes(0), [])
+        self.assertEqual(len(tree.DeepAllNodes(1)), 0)
+        self.assertEqual(tree.DeepAllNodes(1), [])
+        self.assertEqual(len(tree.DeepAllNodes(2)), 0)
+        self.assertEqual(tree.DeepAllNodes(2), [])
+
+        tree.AddKeyValue(3, 3)
+        tree.AddKeyValue(2, 2)
+        tree.AddKeyValue(4, 4)
+
+        self.assertEqual(len(tree.DeepAllNodes(0)), 3)
+        self.assertEqual(tree.DeepAllNodes(0), [tree.FindNodeByKey(
+            2).Node, tree.FindNodeByKey(3).Node, tree.FindNodeByKey(4).Node])
+
+        self.assertEqual(len(tree.DeepAllNodes(1)), 3)
+        self.assertEqual(tree.DeepAllNodes(1), [tree.FindNodeByKey(
+            2).Node, tree.FindNodeByKey(4).Node, tree.FindNodeByKey(3).Node])
+
+        self.assertEqual(len(tree.DeepAllNodes(2)), 3)
+        self.assertEqual(tree.DeepAllNodes(2), [tree.FindNodeByKey(
+            3).Node, tree.FindNodeByKey(2).Node, tree.FindNodeByKey(4).Node])
+
+    def testDeepAllNodesInner(self):
+        tree = BST(None)
+
+        tree.AddKeyValue(5, 5)
+        tree.AddKeyValue(6, 6)
+        tree.AddKeyValue(2, 2)
+        tree.AddKeyValue(4, 4)
+        tree.AddKeyValue(1, 1)
+
+        self.assertEqual(len(tree.DeepAllNodes(0)), 5)
+        self.assertEqual(tree.DeepAllNodes(0), [tree.FindNodeByKey(
+            1).Node, tree.FindNodeByKey(2).Node, tree.FindNodeByKey(4).Node, tree.FindNodeByKey(5).Node, tree.FindNodeByKey(6).Node])
+        self.assertEqual(len(tree.DeepAllNodes(1)), 5)
+        self.assertEqual(tree.DeepAllNodes(1), [tree.FindNodeByKey(
+            1).Node, tree.FindNodeByKey(4).Node, tree.FindNodeByKey(2).Node, tree.FindNodeByKey(6).Node, tree.FindNodeByKey(5).Node])
+        self.assertEqual(len(tree.DeepAllNodes(2)), 5)
+        self.assertEqual(tree.DeepAllNodes(2), [tree.FindNodeByKey(
+            5).Node, tree.FindNodeByKey(2).Node, tree.FindNodeByKey(1).Node, tree.FindNodeByKey(4).Node, tree.FindNodeByKey(6).Node])
+
+
+    def testReverseTree(self):
+        tree = BST(None)
+
+        tree.AddKeyValue(5, 5)
+        tree.AddKeyValue(6, 6)
+        tree.AddKeyValue(2, 2)
+        tree.AddKeyValue(4, 4)
+        tree.AddKeyValue(1, 1)
+
+        self.assertEqual(tree.Reverse(),[tree.FindNodeByKey(
+            5).Node, tree.FindNodeByKey(2).Node, tree.FindNodeByKey(1).Node, tree.FindNodeByKey(4).Node, tree.FindNodeByKey(6).Node])
 
 if __name__ == "__main__":
     unittest.main()
