@@ -20,6 +20,3 @@ def GenerateBBSTArray(a):
     iter(a, bbst)
 
     return bbst
-
-
-GenerateBBSTArray([1, 3, 5])
