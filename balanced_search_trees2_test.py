@@ -42,5 +42,44 @@ class GenerateBBSTTest(unittest.TestCase):
         self.assertEqual(root.RightChild.LeftChild, None)
         self.assertEqual(root.RightChild.RightChild, None)
 
+    def testIsBalancedEmptyTree(self):
+        a = []
+        
+        tree = BalancedBST()
+        tree.GenerateTree(a)
+        
+        self.assertEqual(tree.IsBalanced(tree.Root), True)
+
+    def testIsBalancedSingleNodeTree(self):
+        a = [1]
+        
+        tree = BalancedBST()
+        tree.GenerateTree(a)
+
+        self.assertEqual(tree.IsBalanced(tree.Root), True)
+    
+    def testIsBalancedDeepTree(self):
+        a = [1,2,3]
+
+        tree = BalancedBST()
+        tree.GenerateTree(a)
+
+        self.assertEqual(tree.IsBalanced(tree.Root), True)
+
+    def testUnbalancedDeepTree(self):
+        a = [1,1,2,3,3,3,3]
+
+        tree = BalancedBST()
+        tree.GenerateTree(a)
+
+        self.assertEqual(tree.IsBalanced(tree.Root), False)
+
+    def testUnbalancedDeepLeftTree(self):
+        a = [1,1,1,1,1,2,3]
+
+        tree = BalancedBST()
+        tree.GenerateTree(a)
+        self.assertEqual(tree.IsBalanced(tree.Root), False) 
+
 if __name__ == "__main__":
     unittest.main()

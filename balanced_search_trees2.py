@@ -39,10 +39,10 @@ class BalancedBST:
                 return True
             if node.LeftChild is not None and node.LeftChild.NodeKey >= node.NodeKey:
                 return False
-            if node.RightChild is not None and node.RightChild.NodeKey < node.nodeKey:
+            if node.RightChild is not None and node.RightChild.NodeKey < node.NodeKey:
                 return False
             
-            iter(node.LeftChild)
-            iter(node.RightChild)
+            return iter(node.LeftChild) and iter(node.RightChild)
 
+          
         return iter(root_node)
