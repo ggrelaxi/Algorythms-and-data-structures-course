@@ -34,15 +34,15 @@ class BalancedBST:
 	# ...      
 
     def IsBalanced(self, root_node):
-        def iter(node):
-            if node is None:
-                return True
-            if node.LeftChild is not None and node.LeftChild.NodeKey >= node.NodeKey:
-                return False
-            if node.RightChild is not None and node.RightChild.NodeKey < node.NodeKey:
-                return False
-            
-            return iter(node.LeftChild) and iter(node.RightChild)
+        def iter(node, balanced):
+            if node is None or not balanced:
+                return [0, balanced]
+            leftHeight = iter(node.LeftChild, balanced)[0]
+            rightHeight = iter(node.RightChild, balanced)[0]
 
-          
-        return iter(root_node)
+            if abs(leftHeight - rightHeight) > 1:
+                balanced = False
+
+            return [max(leftHeight, rightHeight) + 1, balanced]
+
+        return iter(root_node, True)[1]

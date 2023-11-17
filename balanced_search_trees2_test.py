@@ -1,5 +1,5 @@
 import unittest
-from balanced_search_trees2 import BalancedBST
+from balanced_search_trees2 import BalancedBST, BSTNode
 
 
 class GenerateBBSTTest(unittest.TestCase):
@@ -66,20 +66,27 @@ class GenerateBBSTTest(unittest.TestCase):
 
         self.assertEqual(tree.IsBalanced(tree.Root), True)
 
-    def testUnbalancedDeepTree(self):
-        a = [1,1,2,3,3,3,3]
-
-        tree = BalancedBST()
-        tree.GenerateTree(a)
-
-        self.assertEqual(tree.IsBalanced(tree.Root), False)
-
     def testUnbalancedDeepLeftTree(self):
-        a = [1,1,1,1,1,2,3]
+        root = BSTNode(3, None)
+        l_lvl1 = BSTNode(2, root)
+        root.LeftChild = l_lvl1
+        l_lvl2 = BSTNode(1, l_lvl1)
+        l_lvl1.LeftChild = l_lvl2
 
         tree = BalancedBST()
-        tree.GenerateTree(a)
-        self.assertEqual(tree.IsBalanced(tree.Root), False) 
+        
+        self.assertEqual(tree.IsBalanced(root), False)
+
+    def testUnbalancedDeepRightTree(self):
+        root = BSTNode(1, None)
+        r_lvl1 = BSTNode(2, root)
+        root.RightChild  = r_lvl1
+        r_lvl2 = BSTNode(3, r_lvl1)
+        r_lvl1.RightChild = r_lvl2
+
+        tree = BalancedBST()
+
+        self.assertEqual(tree.IsBalanced(root), False)
 
 if __name__ == "__main__":
     unittest.main()
