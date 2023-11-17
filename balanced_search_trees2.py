@@ -37,6 +37,12 @@ class BalancedBST:
         def iter(node, balanced):
             if node is None or not balanced:
                 return [0, balanced]
+            
+            if node.LeftChild is not None and node.NodeKey <= node.LeftChild.NodeKey:
+                return [node.Level, False]
+            if node.RightChild is not None and node.NodeKey > node.RightChild.NodeKey:
+                return [node.Level, False]
+            
             leftHeight = iter(node.LeftChild, balanced)[0]
             rightHeight = iter(node.RightChild, balanced)[0]
 

@@ -87,6 +87,26 @@ class GenerateBBSTTest(unittest.TestCase):
         tree = BalancedBST()
 
         self.assertEqual(tree.IsBalanced(root), False)
+    
+    def testInvalidKeysOrderLeft(self):
+        root = BSTNode(5, None)
+        r_lvl1 = BSTNode(6, root)
+        root.LeftChild = r_lvl1
+        
+
+        tree = BalancedBST()
+
+        self.assertEqual(tree.IsBalanced(root), False)
+
+    def testInvalidKeysOrderRight(self):
+        root = BSTNode(6, None)
+        r_lvl1 = BSTNode(5, root)
+        root.RightChild = r_lvl1
+        
+
+        tree = BalancedBST()
+
+        self.assertEqual(tree.IsBalanced(root), False)
 
 if __name__ == "__main__":
     unittest.main()
