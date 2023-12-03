@@ -86,6 +86,20 @@ class GenerateHeapTest(unittest.TestCase):
         self.assertEqual(graph.IsEdge(aIndex, bIndex), False)
         self.assertEqual(graph.IsEdge(aIndex, cIndex), False)
 
+    def testDeleteAndAppendOrder(self):
+        graph = SimpleGraph(3)
+
+        aIndex = graph.AddVertex('A')
+        bIndex = graph.AddVertex('B')
+        cIndex = graph.AddVertex('C')
+
+        self.assertEqual(len(graph.vertex), graph.max_vertex)
+
+        graph.RemoveVertex(aIndex)
+
+        self.assertEqual(graph.vertex[0], None)
+        self.assertEqual(graph.max_vertex, len(graph.vertex))
+
 
 if __name__ == "__main__":
     unittest.main()

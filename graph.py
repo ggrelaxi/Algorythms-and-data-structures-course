@@ -16,7 +16,8 @@ class SimpleGraph:
         if self.max_vertex == self.nodeCount:
             return False
         node = Vertex(v)
-        self.vertex.append(node)
+        emptyIndex = self.vertex.index(None)
+        self.vertex[emptyIndex] = node
         self.nodeCount += 1
         return self.nodeCount - 1
 
