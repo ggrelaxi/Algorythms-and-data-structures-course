@@ -1,5 +1,5 @@
 import unittest
-from tree import SimpleTree, SimpleTreeNode
+from tree_forest import SimpleTree, SimpleTreeNode
 
 
 class SimpleTreeTest(unittest.TestCase):
@@ -177,6 +177,42 @@ class SimpleTreeTest(unittest.TestCase):
         newTree.AddChild(newRootNode, newChildNode2)
 
         self.assertEqual(newTree.LeafCount(), 2)
+
+    def testEvenTrees(self):
+        newTree = SimpleTree(None)
+
+        newRootNode = SimpleTreeNode(1, None)
+        newTree.Root = newRootNode
+
+        sixNode = SimpleTreeNode(6, newRootNode)
+        threeNode = SimpleTreeNode(3, newRootNode)
+        twoNode = SimpleTreeNode(2, newRootNode)
+
+        newTree.AddChild(newRootNode, sixNode)
+        newTree.AddChild(newRootNode, threeNode)
+        newTree.AddChild(newRootNode, twoNode)
+
+        eigthNode = SimpleTreeNode(8, sixNode)
+        newTree.AddChild(sixNode, eigthNode)
+
+        fourNode = SimpleTreeNode(4, threeNode)
+        newTree.AddChild(threeNode, fourNode)
+
+        sevenNode = SimpleTreeNode(7, twoNode)
+        newTree.AddChild(twoNode, sevenNode)
+
+        fiveNode = SimpleTreeNode(5, twoNode)
+        newTree.AddChild(twoNode, fiveNode)
+
+        tenNode = SimpleTreeNode(10, eigthNode)
+        newTree.AddChild(eigthNode, tenNode)
+
+        nineNode = SimpleTreeNode(9, eigthNode)
+        newTree.AddChild(eigthNode, nineNode)
+
+        result = [newRootNode, threeNode, newRootNode, sixNode]
+
+        self.assertEqual(newTree.EvenTrees(), result)
 
 
 if __name__ == "__main__":

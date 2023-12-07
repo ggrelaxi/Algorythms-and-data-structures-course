@@ -97,3 +97,43 @@ class SimpleTree:
             return sum
 
         return iter(self.Root)
+
+    def EvenTrees(self):
+        visited = []
+        result = []
+
+        def iter(node, acc):
+            if node is None:
+                return
+
+            children = node.Children
+
+            for i in range(len(children) - 1, -1, -1):
+                childNode = node.Children[i]
+                childSubTreeCount = self.SubTreeCount(childNode)
+
+                if childSubTreeCount % 2 == 0:
+                    acc.append(node)
+                    acc.append(childNode)
+
+            for i in range(len(children) - 1, -1, -1):
+                childNode = node.Children[i]
+                iter(childNode, acc)
+
+        iter(self.Root, result)
+        return result
+
+    def SubTreeCount(self, node):
+        if node is None:
+            return 0
+
+        def iter(node):
+            if len(node.Children) == 0:
+                return 1
+
+            sum = 1
+            for childNode in node.Children:
+                sum = sum + iter(childNode)
+            return sum
+
+        return iter(node)
