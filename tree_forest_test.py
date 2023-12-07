@@ -214,6 +214,24 @@ class SimpleTreeTest(unittest.TestCase):
 
         self.assertEqual(newTree.EvenTrees(), result)
 
+    def testEvenTreeWithOddNodes(self):
+        newTree = SimpleTree(None)
+
+        self.assertEqual(newTree.EvenTrees(), [])
+
+        newRootNode = SimpleTreeNode(1, None)
+        newTree.Root = newRootNode
+
+        self.assertEqual(newTree.EvenTrees(), [])
+
+        sixNode = SimpleTreeNode(6, newRootNode)
+        threeNode = SimpleTreeNode(3, newRootNode)
+
+        newTree.AddChild(newRootNode, sixNode)
+        newTree.AddChild(newRootNode, threeNode)
+
+        self.assertEqual(newTree.EvenTrees(), [])
+
 
 if __name__ == "__main__":
     unittest.main()
