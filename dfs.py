@@ -66,13 +66,8 @@ class SimpleGraph:
         for i in range(len(self.vertex)):
             self.vertex[i].Hit = False
 
-        def iter(sourceIdx, dest, acc):
-            currentNode = self.vertex[sourceIdx]
-            currentNode.Hit = True
-            acc.append(sourceIdx)
-
-            currentNodeReferences = self.m_adjacency[sourceIdx]
-
+        def getEdges(nodeIdx):
+            currentNodeReferences = self.m_adjacency[nodeIdx]
             currentNodeReferencesNodeIndex = []
             for i in range(len(currentNodeReferences)):
                 ref = currentNodeReferences[i]
@@ -80,36 +75,30 @@ class SimpleGraph:
                     continue
                 else:
                     currentNodeReferencesNodeIndex.append(i)
-            if dest in currentNodeReferencesNodeIndex:
-                acc.append(dest)
-                return acc
+            return currentNodeReferencesNodeIndex
 
-            for i in range(len(currentNodeReferencesNodeIndex)):
-                currentRefNodeIndex = currentNodeReferencesNodeIndex[i]
-                if self.vertex[currentRefNodeIndex].Hit == False:
-                    return iter(currentRefNodeIndex, dest, acc)
+        def iter(sourceIdx, dest, acc):
+            currentNode = self.vertex[sourceIdx]
+            if currentNode.Hit != True:
+                currentNode.Hit = True
+                acc.append(sourceIdx)
+
+                currentNodeReferencesNodeIndex = getEdges(sourceIdx)
+                if dest in currentNodeReferencesNodeIndex:
+                    acc.append(dest)
+                    return acc
+
+                for i in range(len(currentNodeReferencesNodeIndex)):
+                    currentRefNodeIndex = currentNodeReferencesNodeIndex[i]
+                    if self.vertex[currentRefNodeIndex].Hit == False:
+                        return iter(currentRefNodeIndex, dest, acc)
 
             acc.pop()
+
             if len(acc) == 0:
                 return acc
-            else:
-                lastCurrentNode = self.vertex[acc[len(acc)-1]]
-                lastCurrentNode.Hit = True
-                return iter(acc[len(acc)-1], dest, acc)
 
-            # for i in range(len(currentNodeReferences)):
-            #     isEdge = currentNodeReferences[i]
-            #     if isEdge == 0:
-            #         continue
-            #     if dest == i:
-            #         acc.append(i)
-            #         return acc
-            # elif self.vertex[i].Hit == False:
-            #     return iter(i, dest, acc)
-            # elif self.vertex[i].Hit == True:
-            #     stack.pop()
-            #     if len(stack) == 0:
-            #         return stack
-            #     return iter(stack[len(stack) - 1], dest, acc)
+            lastNodeFromAccIndex = acc[len(acc) - 1]
+            return iter(lastNodeFromAccIndex, dest, acc)
 
         return iter(VFrom, VTo, stack)

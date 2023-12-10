@@ -20,10 +20,15 @@ class SimpleTreeTest(unittest.TestCase):
         graph.AddEdge(bIndex, eIndex)
         graph.AddEdge(dIndex, eIndex)
 
-        # self.assertEqual(graph.DepthFirstSearch(0, 1), [0, 1])
-        # self.assertEqual(graph.DepthFirstSearch(0, 2), [0, 2])
-        # self.assertEqual(graph.DepthFirstSearch(0, 3), [0, 3])
+        self.assertEqual(graph.DepthFirstSearch(0, 1), [0, 1])
+        self.assertEqual(graph.DepthFirstSearch(0, 2), [0, 2])
+        self.assertEqual(graph.DepthFirstSearch(0, 3), [0, 3])
         self.assertEqual(graph.DepthFirstSearch(0, 4), [0, 1, 4])
+
+        graph.RemoveEdge(eIndex, bIndex)
+        graph.RemoveEdge(eIndex, dIndex)
+
+        self.assertEqual(graph.DepthFirstSearch(0, 4), [])
 
 
 if __name__ == "__main__":
