@@ -81,11 +81,11 @@ class SimpleGraph:
             currentNode = self.vertex[sourceIdx]
             if currentNode.Hit != True:
                 currentNode.Hit = True
-                acc.append(sourceIdx)
+                acc.append(self.vertex[sourceIdx])
 
                 currentNodeReferencesNodeIndex = getEdges(sourceIdx)
                 if dest in currentNodeReferencesNodeIndex:
-                    acc.append(dest)
+                    acc.append(self.vertex[dest])
                     return acc
 
                 for i in range(len(currentNodeReferencesNodeIndex)):
@@ -98,7 +98,8 @@ class SimpleGraph:
             if len(acc) == 0:
                 return acc
 
-            lastNodeFromAccIndex = acc[len(acc) - 1]
-            return iter(lastNodeFromAccIndex, dest, acc)
+            lastNodeFromAcc = acc[len(acc) - 1]
+
+            return iter(self.vertex.index(lastNodeFromAcc), dest, acc)
 
         return iter(VFrom, VTo, stack)
