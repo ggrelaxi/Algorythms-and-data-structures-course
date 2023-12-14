@@ -103,3 +103,51 @@ class SimpleGraph:
             return iter(self.vertex.index(lastNodeFromAcc), dest, acc)
 
         return iter(VFrom, VTo, stack)
+
+    def BreadthFirstSearch(self, VFrom, VTo):
+        # узлы задаются позициями в списке vertex
+        # возвращается список узлов -- путь из VFrom в VTo
+        # или [] если пути нету
+        queue = []
+
+        for i in range(len(self.vertex)):
+            self.vertex[i].Hit = False
+
+        def getEdges(nodeIdx):
+            currentNodeReferences = self.m_adjacency[nodeIdx]
+            currentNodeReferencesNodeIndex = []
+            for i in range(len(currentNodeReferences)):
+                ref = currentNodeReferences[i]
+                if ref == 0:
+                    continue
+                else:
+                    currentNodeReferencesNodeIndex.append(i)
+            return currentNodeReferencesNodeIndex
+
+        def iter(sourceIdx, path):
+            currentNode = self.vertex[sourceIdx]
+
+            currentNode.Hit = True
+
+            currentNodeReferencesNodeIndex = getEdges(sourceIdx)
+
+            for i in range(len(currentNodeReferencesNodeIndex)):
+                currentRefNodeIndex = currentNodeReferencesNodeIndex[i]
+                currentRefNode = self.vertex[currentRefNodeIndex]
+                if currentRefNode.Hit == False:
+                    if currentRefNodeIndex == VTo:
+                        path.append(currentNode)
+                        path.append(self.vertex[currentRefNodeIndex])
+                        return path
+
+                    self.vertex[currentRefNodeIndex].Hit = True
+                    queue.insert(0, currentRefNodeIndex)
+
+            if len(queue) == 0:
+                return queue
+
+            lastQueueItem = queue.pop()
+
+            return iter(lastQueueItem, [*path, currentNode])
+
+        return iter(VFrom, [])
