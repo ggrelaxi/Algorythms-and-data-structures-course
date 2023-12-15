@@ -126,8 +126,9 @@ class SimpleGraph:
             return currentNodeReferencesNodeIndex
 
         def iter(sourceIdx):
-
             currentNode = self.vertex[sourceIdx]
+            if sourceIdx == VTo:
+                return [currentNode]
             currentNode.Hit = True
 
             currentNodeReferencesNodeIndex = getEdges(sourceIdx)
