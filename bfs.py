@@ -3,6 +3,7 @@ class Vertex:
     def __init__(self, val):
         self.Value = val
         self.Hit = False
+        self.Parents = []
 
 
 class SimpleGraph:
@@ -124,9 +125,9 @@ class SimpleGraph:
                     currentNodeReferencesNodeIndex.append(i)
             return currentNodeReferencesNodeIndex
 
-        def iter(sourceIdx, path):
-            currentNode = self.vertex[sourceIdx]
+        def iter(sourceIdx):
 
+            currentNode = self.vertex[sourceIdx]
             currentNode.Hit = True
 
             currentNodeReferencesNodeIndex = getEdges(sourceIdx)
@@ -136,11 +137,11 @@ class SimpleGraph:
                 currentRefNode = self.vertex[currentRefNodeIndex]
                 if currentRefNode.Hit == False:
                     if currentRefNodeIndex == VTo:
-                        path.append(currentNode)
-                        path.append(self.vertex[currentRefNodeIndex])
-                        return path
+                        return [*currentNode.Parents, currentNode, currentRefNode]
 
                     self.vertex[currentRefNodeIndex].Hit = True
+                    self.vertex[currentRefNodeIndex].Parents = [
+                        *currentNode.Parents, currentNode]
                     queue.insert(0, currentRefNodeIndex)
 
             if len(queue) == 0:
@@ -148,6 +149,6 @@ class SimpleGraph:
 
             lastQueueItem = queue.pop()
 
-            return iter(lastQueueItem, [*path, currentNode])
+            return iter(lastQueueItem)
 
-        return iter(VFrom, [])
+        return iter(VFrom)

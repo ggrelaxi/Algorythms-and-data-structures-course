@@ -35,13 +35,15 @@ class SimpleTreeTest(unittest.TestCase):
         self.assertEqual(graph.DepthFirstSearch(0, 4), [])
 
     def testBFS(self):
-        graph = SimpleGraph(5)
+        graph = SimpleGraph(7)
 
         aIndex = graph.AddVertex('A')
         bIndex = graph.AddVertex('B')
         cIndex = graph.AddVertex('C')
         dIndex = graph.AddVertex('D')
         eIndex = graph.AddVertex('E')
+        fIndex = graph.AddVertex('F')
+        gIndex = graph.AddVertex('G')
 
         graph.AddEdge(aIndex, bIndex)
         graph.AddEdge(aIndex, cIndex)
@@ -49,6 +51,8 @@ class SimpleTreeTest(unittest.TestCase):
         graph.AddEdge(cIndex, dIndex)
         graph.AddEdge(bIndex, eIndex)
         graph.AddEdge(dIndex, eIndex)
+        graph.AddEdge(cIndex, fIndex)
+        graph.AddEdge(fIndex, gIndex)
 
         self.assertEqual(graph.BreadthFirstSearch(0, 1), [
                          graph.vertex[0], graph.vertex[1]])
@@ -63,6 +67,8 @@ class SimpleTreeTest(unittest.TestCase):
         graph.RemoveEdge(eIndex, dIndex)
 
         self.assertEqual(graph.BreadthFirstSearch(0, 4), [])
+        self.assertEqual(graph.BreadthFirstSearch(0, 6), [
+                         graph.vertex[0], graph.vertex[2], graph.vertex[5], graph.vertex[6]])
 
 
 if __name__ == "__main__":
