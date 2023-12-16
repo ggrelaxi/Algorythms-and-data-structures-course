@@ -74,7 +74,7 @@ class SimpleTreeTest(unittest.TestCase):
         aIndex = graph2.AddVertex('A')
 
         self.assertEqual(graph2.BreadthFirstSearch(0, 0), [
-                         graph2.vertex[0]])
+            graph2.vertex[0]])
 
         graph3 = SimpleGraph(3)
 
@@ -86,10 +86,32 @@ class SimpleTreeTest(unittest.TestCase):
         graph3.AddEdge(bIndex, cIndex)
 
         self.assertEqual(graph3.BreadthFirstSearch(0, 1), [
-                         graph3.vertex[0], graph3.vertex[1]])
+            graph3.vertex[0], graph3.vertex[1]])
 
         self.assertEqual(graph3.BreadthFirstSearch(0, 2), [
             graph3.vertex[0], graph3.vertex[1], graph3.vertex[2]])
+
+        graph4 = SimpleGraph(4)
+
+        aIndex = graph4.AddVertex('A')
+        bIndex = graph4.AddVertex('B')
+        cIndex = graph4.AddVertex('C')
+        dIndex = graph4.AddVertex('D')
+
+        graph4.AddEdge(aIndex, bIndex)
+        graph4.AddEdge(aIndex, cIndex)
+        graph4.AddEdge(aIndex, dIndex)
+
+        self.assertEqual(graph4.BreadthFirstSearch(0, 1), [
+                         graph4.vertex[0], graph4.vertex[1]])
+
+        self.assertEqual(graph4.BreadthFirstSearch(0, 2), [
+            graph4.vertex[0], graph4.vertex[2]])
+        self.assertEqual(graph4.BreadthFirstSearch(0, 3), [
+            graph4.vertex[0], graph4.vertex[3]])
+
+        self.assertEqual(graph4.BreadthFirstSearch(1, 2), [
+            graph4.vertex[1], graph4.vertex[0], graph4.vertex[2]])
 
 
 if __name__ == "__main__":

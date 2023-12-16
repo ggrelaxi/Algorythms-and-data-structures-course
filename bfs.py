@@ -113,6 +113,7 @@ class SimpleGraph:
 
         for i in range(len(self.vertex)):
             self.vertex[i].Hit = False
+            self.vertex[i].Parents = []
 
         def getEdges(nodeIdx):
             currentNodeReferences = self.m_adjacency[nodeIdx]
