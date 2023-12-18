@@ -1,5 +1,5 @@
 import unittest
-from bfs import SimpleGraph, Vertex
+from weakvertices import SimpleGraph, Vertex
 
 
 class SimpleTreeTest(unittest.TestCase):
@@ -112,6 +112,60 @@ class SimpleTreeTest(unittest.TestCase):
 
         self.assertEqual(graph4.BreadthFirstSearch(1, 2), [
             graph4.vertex[1], graph4.vertex[0], graph4.vertex[2]])
+
+    def testLinkedEdges(self):
+        graph = SimpleGraph(9)
+
+        aIndex = graph.AddVertex('A')
+        bIndex = graph.AddVertex('B')
+        cIndex = graph.AddVertex('C')
+        dIndex = graph.AddVertex('D')
+        eIndex = graph.AddVertex('E')
+        fIndex = graph.AddVertex('F')
+        gIndex = graph.AddVertex('G')
+        hIndex = graph.AddVertex('H')
+        iIndex = graph.AddVertex('I')
+
+        graph.AddEdge(aIndex, bIndex)
+        graph.AddEdge(bIndex, cIndex)
+        graph.AddEdge(bIndex, dIndex)
+        graph.AddEdge(cIndex, dIndex)
+        graph.AddEdge(dIndex, eIndex)
+        graph.AddEdge(dIndex, fIndex)
+        graph.AddEdge(eIndex, gIndex)
+        graph.AddEdge(fIndex, gIndex)
+        graph.AddEdge(gIndex, hIndex)
+        graph.AddEdge(hIndex, iIndex)
+        graph.AddEdge(fIndex, iIndex)
+
+    def testWeakVertices(self):
+        graph = SimpleGraph(9)
+
+        aIndex = graph.AddVertex('A')
+        bIndex = graph.AddVertex('B')
+        cIndex = graph.AddVertex('C')
+        dIndex = graph.AddVertex('D')
+        eIndex = graph.AddVertex('E')
+        fIndex = graph.AddVertex('F')
+        gIndex = graph.AddVertex('G')
+        hIndex = graph.AddVertex('H')
+        iIndex = graph.AddVertex('I')
+
+        graph.AddEdge(aIndex, bIndex)
+        graph.AddEdge(bIndex, cIndex)
+        graph.AddEdge(bIndex, dIndex)
+        graph.AddEdge(cIndex, dIndex)
+        graph.AddEdge(dIndex, eIndex)
+        graph.AddEdge(dIndex, fIndex)
+        graph.AddEdge(eIndex, gIndex)
+        graph.AddEdge(fIndex, gIndex)
+        graph.AddEdge(fIndex, hIndex)
+        graph.AddEdge(gIndex, hIndex)
+        graph.AddEdge(hIndex, iIndex)
+        graph.AddEdge(fIndex, iIndex)
+
+        self.assertEqual(graph.WeakVertices(), [
+                         graph.vertex[0], graph.vertex[4]])
 
 
 if __name__ == "__main__":

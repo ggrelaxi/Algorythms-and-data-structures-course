@@ -154,3 +154,52 @@ class SimpleGraph:
             return iter(lastQueueItem)
 
         return iter(VFrom)
+
+    def WeakVertices(self):
+        # возвращает список узлов вне треугольников
+        # return []
+        for i in range(len(self.vertex)):
+            self.vertex[i].Hit = False
+            self.vertex[i].Parents = []
+
+        queue = []
+
+        def haveLinkedEdges(edges):
+            if len(edges) < 2:
+                return False
+            for i in range(len(edges) - 1):
+                for j in range(i + 1, len(edges)):
+                    if self.IsEdge(edges[i], edges[j]):
+                        return True
+            return False
+
+        def getEdges(nodeIdx):
+            currentNodeReferences = self.m_adjacency[nodeIdx]
+            currentNodeReferencesNodeIndex = []
+            for i in range(len(currentNodeReferences)):
+                ref = currentNodeReferences[i]
+                if ref == 0:
+                    continue
+                else:
+                    currentNodeReferencesNodeIndex.append(i)
+            return currentNodeReferencesNodeIndex
+
+        def iter(nodeIndex, acc):
+            self.vertex[nodeIndex].Hit = True
+            edges = getEdges(nodeIndex)
+
+            isLinkedEdges = haveLinkedEdges(edges)
+            if isLinkedEdges == False:
+                acc.append(self.vertex[nodeIndex])
+
+            for i in range(len(edges)):
+                if self.vertex[edges[i]].Hit == False and edges[i] not in queue:
+                    queue.insert(0, edges[i])
+
+            if len(queue) == 0:
+                return acc
+
+            lastQueueItem = queue.pop()
+            return iter(lastQueueItem, acc)
+
+        return iter(0, [])
